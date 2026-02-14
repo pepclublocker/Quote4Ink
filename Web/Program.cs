@@ -17,6 +17,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.SignIn.RequireConfirmedAccount = true; })
           .AddEntityFrameworkStores<ApplicationDbContext>()
+       //   .AddRoles()
           .AddDefaultUI()
           // .AddSignInManager<CustomSignIn<ApplicationUser>>()
           .AddDefaultTokenProviders();
@@ -122,6 +123,8 @@ using (var scope = app.Services.CreateScope())
         var db = services.GetRequiredService<ApplicationDbContext>();
         db.Database.Migrate();   // applies any pending migrations
         DataSeeder.Seed(db);     // run your idempotent seeder
+
+        await DataSeeder.SeedRolesAndAdminAsync(services);
     }
     catch (Exception ex)
     {
