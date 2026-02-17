@@ -9,22 +9,26 @@ using Web.Data.Repository;
 namespace Web.Pages
 {
     [Authorize]
-    public class ClientsModel(UserManager<ApplicationUser> myUser, ILogger<ClientsModel> logger, IRepository repository) : PageModel
+    public class ClientsModel(UserManager<ApplicationUser> myUser, IRepository repository) : PageModel
     {
 
-        public readonly ILogger<ClientsModel>? _logger;
-        public IRepository? _repRepository { get; }
+       // public readonly ILogger<ClientsModel>? _logger = logger;
+        public IRepository? _repRepository { get; } = repository;
 
-        public UserManager<ApplicationUser>? _appUser;
+        public UserManager<ApplicationUser>? _appUser = myUser;
 
         public IEnumerable<Client> pClients { get; set; }
 
         public void OnGet()
         {
-
-
-          //  pClients = _repRepository.GetClients(_appUser.GetUserAsync(User).Result.SalesGroupID);
-
+            
+            
+            var x = 1;
+            pClients = _repRepository.GetClients(_appUser.GetUserAsync(User).Result.SalesGroupID);
+            
+            
+            
+            var y=1;
         }
 
         public ActionResult OnGetDeleteClient(Guid myClientID)
@@ -41,8 +45,21 @@ namespace Web.Pages
                 return new JsonResult(returnValue);
             }
         }
+
+        public IActionResult OnPostDelete(string id)
+        {
+            var x = "this is good stuff";
+            //return new JsonResult(x);
+            _repRepository.DeleteClient(Guid.Parse(id), _appUser.GetUserAsync(User).Result.SalesGroupID);
+
+            return Partial("_ClientList", _repRepository.GetClients(_appUser.GetUserAsync(User).Result.SalesGroupID).ToList());
+        }
+
+
     }
 }
+
+
 
 
 

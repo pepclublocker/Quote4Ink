@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using NUglify.Css;
 using Web.Data;
 using Web.Data.Models;
+using Web.Data.Repository;
 using WebOptimizer.Processors;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +32,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 
-//builder.Services.AddScoped<IRepository, SQLRepository>();
+builder.Services.AddScoped<IRepository, SQLRepository>();
 
 builder.Services.AddWebOptimizer(
 
@@ -68,6 +69,7 @@ pipeline =>
          "ZZ_Script/config.js",
          "ZZ_Script/sidebar-menu.js",
          "ZZ_Script/sidebar-pin.js",
+      
         "ZZ_Script/script.js"
         ).UseContentRoot();
     pipeline.AddJavaScriptBundle("/js/bundle2.js",

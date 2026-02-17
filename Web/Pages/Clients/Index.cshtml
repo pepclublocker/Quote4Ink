@@ -4,7 +4,7 @@
 }
 
 
-<div class="app-page-title">
+<div class="app-page-title" >
     <div class="page-title-wrapper">
         <div class="page-title-heading">
             <div class="page-title-icon">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="page-title-actions">
-            <a asp-page="/Clients/ClientManage" asp-route-clientid="0" class="btn-shadow btn btn-info">
+            <a asp-page="/Clients/ClientManage" asp-route-clientid="0" class="btn-shadow btn btn-info" id="submitButton">
                 <span class="btn-icon-wrapper pr-2 opacity-7">
                     <i class="ti ti-circle-plus"></i>
                 </span>
@@ -45,24 +45,54 @@
         </div>
         <div class="card-body mr-5 ml-5">
             <div id="grid">
-               
+                <partial name="_ClientList" model="Model.pClients" />
             </div>
         </div>
     </div>
 </div>
 
+<ul hx-boost="true"
+    hx-target="#grid"
+    hx-swap="outerHTML swap:1s"
+    hx-disbled-elt="find button"
+   
+    hx-trigger='confirmed'
+    onClick="Swal.fire({title: 'Confirm', text:'Do you want to continue?'}).then((result)=>{
+            if(result.isConfirmed){
+              htmx.trigger(this, 'confirmed');
+            }
+        })"
+    class="customer-list list-group list-group-lg list-group-flush list my--4" style="disabled-opacity:2">
+    @foreach (var customer in Model.pClients)
+    {
+        <li class="list-group-item px-0">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <span class="avatar avatar-lg">
+                        <div>@customer.CompanyID</div>
+                    </span>
+                </div>
+                <div class="col ml--2">
+                    <h4 class="card-title mb-1">
+                      
+                    </h4>
+                    <p class="card-text small text-muted mb-1">
+                        @customer.FirstName
+                    </p>
+                </div>
+                <div class="col-auto">
+                    <form asp-page-handler="Delete" asp-route-id="@customer.Id">
+                        <button type="submit" class="btn btn-sm btn-danger d-none d-md-inline-block" >
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
 
 
-@section Scripts {
-    <script src="~/js/pages.clients.index.js" asp-append-version="true"></script>
-
-    <style>
-        #clientList_wrapper {
-            width: 100%
-        }
-    </style>
-
-}
 <!--Modals-->
 
 <div class="modal fade" tabindex="-1" role="dialog" id="details-modal">

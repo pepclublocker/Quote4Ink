@@ -4,13 +4,14 @@ using Web.Data.Models;
 namespace Web.Data.Repository
 {
     public partial class SQLRepository : IRepository
+
     {
 
-        public IEnumerable<Client> GetClients(int __salesGroup, bool ActiveUsers = true)
+        public IQueryable<Client> GetClients(int __salesGroup, bool ActiveUsers = true)
         {
             // int[] CompList = _context.Companies.Where(y => y.SalesGroupID == __salesGroup).Select(u => u.Id).ToArray().con;
 
-            return _context.Clients.Where(x => x.Active == ActiveUsers && _context.Companies.Where(y => y.SalesGroupID == __salesGroup).Select(u => u.Id).ToArray().Contains(x.CompanyID)).Include(a => a.Company).Include(b => b.Quotes);
+            return _context.Clients.Where(x => x.Active == ActiveUsers);// && _context.Companies.Where(y => y.SalesGroupID == __salesGroup);
 
          // return _context.Clients.Where(x => x)
            
@@ -70,6 +71,9 @@ namespace Web.Data.Repository
             }
         }
 
-
+        IEnumerable<Client> IRepository.GetClients(int __salesGroup, bool ActiveUsers)
+        {
+            return GetClients(__salesGroup, ActiveUsers);
+        }
     }
 }

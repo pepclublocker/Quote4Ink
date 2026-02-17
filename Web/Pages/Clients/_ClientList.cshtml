@@ -4,7 +4,7 @@
 <table style="width:100%;white-space:nowrap" class="table table-hover table-secondary" id="clientList">
     <thead>
         <tr class="table-light">
-          
+
             <th style="width:100%">Name</th>
             <th># Quotes</th>
             <th>Company</th>
@@ -17,10 +17,19 @@
     <tbody class="table-group-divider">
         @foreach (var _client in Model)
         {
-            <tr>
-              
+            <tr hx-boost="true"
+                hx-target="#grid"
+               
+                hx-disbled-elt="find button"
+                hx-trigger='confirmed'
+                onClick="Swal.fire({title: 'Confirm', text:'Do you want to continue?'}).then((result)=>{
+                if(result.isConfirmed){
+                  htmx.trigger(this, 'confirmed');
+                }
+            })">
+
                 <td>@_client.FirstName @_client.LastName</td>
-             
+
                 <td>@_client.DateUpdated.Date.ToShortDateString()</td>
                 <td>@_client.DateCreated.Date.ToShortDateString()</td>
                 <td>
@@ -30,7 +39,7 @@
                             Edit
                         </a>
 
-                        <button type="button" class="btn btn-danger btn-sm deleteComp" data-compid="@_client.Id">
+                        <button type="button" class="btn btn-danger btn-sm deleteComp" data-compid="@_client.Id" hx-post="/Clients/index" hx->
                             Delete
                         </button>
                     }

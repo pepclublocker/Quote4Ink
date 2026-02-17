@@ -8,11 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\htmx.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ZZ_Stylesheet\color-1.css" />
     <Content Include="ZZ_Stylesheet\color-1.css.map" />
     <Content Include="ZZ_Stylesheet\font-awesome.css" />
     <Content Include="ZZ_Stylesheet\style.css" />
     <Content Include="ZZ_Stylesheet\style.css.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\htmx.js" />
   </ItemGroup>
 
   <ItemGroup>
