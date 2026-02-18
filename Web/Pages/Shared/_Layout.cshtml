@@ -1,11 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Antiforgery
 
 @inject SignInManager<Data.Models.ApplicationUser> SignInManager
 @inject UserManager<Data.Models.ApplicationUser> UserManager
+@inject IAntiforgery Antiforgery
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="x-request-verification-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,6 +95,10 @@
       -->
     <!-- VS js-->
     <script src="~/htmx.js"></script>
+  
+    <script>
+       
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -3,7 +3,33 @@
 @{
 }
 
+<style>
+    .htmx-indicator {
+        opacity: 0;
+        transition: opacity 200ms ease-in; /* Optional: for a smooth fade-in */
+    }
 
+    /* Show the spinner when the htmx-request class is present */
+    .htmx-request .htmx-indicator {
+        opacity: 1;
+    }
+
+    #grid:disabled {
+        display: none;
+    }
+    /* Style for all elements with the 'disabled' attribute, even non-form ones */
+    [disabled] {
+        pointer-events: none; /* Prevents mouse clicks */
+        opacity: 0.5; /* Visually indicates a disabled state */
+        cursor: not-allowed; /* Changes the cursor */
+    }
+
+        /* Also ensure keyboard navigation is handled by setting tabindex to -1 */
+        [disabled]:focus {
+            tabindex: -1; /* Prevents focus via keyboard tabbing */
+        }
+
+</style>
 <div class="app-page-title" >
     <div class="page-title-wrapper">
         <div class="page-title-heading">
@@ -47,74 +73,16 @@
             <div id="grid">
                 <partial name="_ClientList" model="Model.pClients" />
             </div>
+
+            <img id="spinner" class="htmx-indicator" src="/path/to/your/spinner.svg" alt="Loading...">
+
         </div>
     </div>
 </div>
 
-<ul hx-boost="true"
-    hx-target="#grid"
-    hx-swap="outerHTML swap:1s"
-    hx-disbled-elt="find button"
-   
-    hx-trigger='confirmed'
-    onClick="Swal.fire({title: 'Confirm', text:'Do you want to continue?'}).then((result)=>{
-            if(result.isConfirmed){
-              htmx.trigger(this, 'confirmed');
-            }
-        })"
-    class="customer-list list-group list-group-lg list-group-flush list my--4" style="disabled-opacity:2">
-    @foreach (var customer in Model.pClients)
-    {
-        <li class="list-group-item px-0">
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <span class="avatar avatar-lg">
-                        <div>@customer.CompanyID</div>
-                    </span>
-                </div>
-                <div class="col ml--2">
-                    <h4 class="card-title mb-1">
-                      
-                    </h4>
-                    <p class="card-text small text-muted mb-1">
-                        @customer.FirstName
-                    </p>
-                </div>
-                <div class="col-auto">
-                    <form asp-page-handler="Delete" asp-route-id="@customer.Id">
-                        <button type="submit" class="btn btn-sm btn-danger d-none d-md-inline-block" >
-                            Delete
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </li>
-    }
-</ul>
 
 
-<!--Modals-->
+<div id="modal-container"></div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
-
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Are You Sure?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-               Are you sure you want to delete this customer?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="dataCancelDelete">Cancel</button>
-                <button type="button" class="btn btn-danger" id="dataSubmitDelete">Delete Customer</button>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 

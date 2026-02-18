@@ -69,7 +69,7 @@ pipeline =>
          "ZZ_Script/config.js",
          "ZZ_Script/sidebar-menu.js",
          "ZZ_Script/sidebar-pin.js",
-      
+      "ZZ_Script/token.js",
         "ZZ_Script/script.js"
         ).UseContentRoot();
     pipeline.AddJavaScriptBundle("/js/bundle2.js",

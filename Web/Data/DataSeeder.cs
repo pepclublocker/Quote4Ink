@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Net.NetworkInformation;
 using Web.Data.Models;
+using RandomFriendlyNameGenerator;
 
 namespace Web.Data
 {
@@ -29,6 +30,26 @@ namespace Web.Data
                 context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.SalesGroups OFF;");
 
                 thisTrans.Commit();
+            }
+
+            //create sample data for use in testing 
+            if (!context.Clients.Where(x => x.Privledged == false && x.Active == true).Any())
+            {
+
+                for (int i = 0; i <= 4; i++)
+                    context.Clients.Add(new Client()
+                    {
+                        Id = Guid.NewGuid(),
+                        FirstName = NameGenerator.PersonNames.Get().ToString(),
+                        LastName = NameGenerator.Identifiers.Get().ToString(),
+                        CompanyID = Guid.Parse("0fbeed09-13bd-44be-8f2b-ab92cf06907a"),
+                        DateCreated = DateTime.Now,
+                        DateUpdated = DateTime.Now,
+                        Active = true,
+                        Privledged = false
+                    }
+                    );
+                context.SaveChanges();
             }
         }
 
@@ -151,6 +172,9 @@ namespace Web.Data
                     throw new Exception("Failed to create the owner user: " + string.Join(", ", result.Errors));
                 }
             }
+
+
+
         }
     }
 }

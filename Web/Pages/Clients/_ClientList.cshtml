@@ -14,41 +14,37 @@
         </tr>
     </thead>
 
+
+
     <tbody class="table-group-divider">
         @foreach (var _client in Model)
         {
-            <tr hx-boost="true"
-                hx-target="#grid"
-               
-                hx-disbled-elt="find button"
-                hx-trigger='confirmed'
-                onClick="Swal.fire({title: 'Confirm', text:'Do you want to continue?'}).then((result)=>{
-                if(result.isConfirmed){
-                  htmx.trigger(this, 'confirmed');
-                }
-            })">
+            <tr>
 
                 <td>@_client.FirstName @_client.LastName</td>
 
                 <td>@_client.DateUpdated.Date.ToShortDateString()</td>
                 <td>@_client.DateCreated.Date.ToShortDateString()</td>
                 <td>
-                    @if (_client.Privledged != true)
-                    {
-                        <a class="btn btn-primary btn-sm" asp-page="/Clients/clientManage" asp-route-clientid="@_client.Id">
+
+                    
+                        <a class="btn btn-primary btn-sm"
+                           hx-get="@Url.Page("/clients/index", "ClientEdit")"
+                           hx-vals='{"id":"@_client.Id"}'
+                           hx-target="#modal-container"
+                           hx-swap="innerHTML">
                             Edit
                         </a>
 
-                        <button type="button" class="btn btn-danger btn-sm deleteComp" data-compid="@_client.Id" hx-post="/Clients/index" hx->
+                        <a href="#" class="btn btn-danger btn-sm deleteComp"
+                           hx-get="@Url.Page("/clients/index", "ConfirmDelete")"
+                           hx-vals='{"id":"@_client.Id"}'
+                           hx-target="#modal-container"
+                           hx-swap="innerHTML"
+                           disabled="@_client.Privledged">
                             Delete
-                        </button>
-                    }
-                    else
-                    {
-                        <a class="btn btn-primary btn-sm" asp-page="/Clients/clientManage" asp-route-clientid="@_client.Id">
-                            Edit
                         </a>
-                    }
+                   
 
 
                 </td>
