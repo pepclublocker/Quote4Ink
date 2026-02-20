@@ -155,8 +155,6 @@ namespace Web.Pages
                 IEnumerable<Difference> differences;
                 comparer.IgnoreMember<DateTime>();
 
-                var x = comparer.Compare(Input, oldCompany, out differences);
-
                 if (!comparer.Compare(Input, oldCompany, out differences))
                 {
                     _repRepository?.UpdateCompany(Input);

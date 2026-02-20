@@ -137,6 +137,7 @@ using (var scope = app.Services.CreateScope())
     {
         //  var logger = services.GetRequiredService<ILogger<Program>>();
         //   logger.LogError(ex, "Error while migrating or seeding the database.");
+        var x = ex; // for debugging
         throw;
     }
 }

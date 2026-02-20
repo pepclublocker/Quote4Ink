@@ -23,18 +23,26 @@ namespace Web.Pages
         [BindProperty]
         public Client? Input { get; set; }
 
-        public void OnGet()
+       
+        public IActionResult OnGetLoadInital()
         {
             var myUser = _appUser?.GetUserAsync(User).Result;
+
             if (myUser != null)
             {
+
                 //grab all clients in database for display
                 var clients = _repRepository?.GetClients(myUser.SalesGroupID);
                 pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
+                return Partial("_ClientList", pClients);
+            }
+            else
+            {
+                return Partial("_ErrorDialog", new Exception("User not found"));
             }
         }
 
-        public ActionResult OnGetDeleteClient(Guid myClientID)
+        public IActionResult OnGetDeleteClient(Guid myClientID)
         {
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
@@ -49,7 +57,7 @@ namespace Web.Pages
                 }
                 else //the delete did not work 
                 {
-                    return new JsonResult(returnValue);
+                    return Partial("_ErrorDialog", new Exception("Client not deleted"));
                 }
             }
             else
@@ -66,7 +74,6 @@ namespace Web.Pages
                 List<Client> clients = new List<Client>();
                 try //lets try all the data query first and if any of it fails we can just return the error modal 
                 {
-
                     clients = (_repRepository?.GetClients(myUser.SalesGroupID) ?? Enumerable.Empty<Client>()).ToList(); //list of clients
 
                     Client? thisClient = clients.FirstOrDefault(x => x.Id == Guid.Parse(id)); //the client we are deleting
@@ -120,7 +127,7 @@ namespace Web.Pages
             }
             else
             {
-                return Partial("_ErrorDialog", new Exception("User not found"));
+                return Partial("_ErrorPopup", new Exception("Issue with client or with delete"));
             }
         }
 
@@ -135,28 +142,38 @@ namespace Web.Pages
             }
             else
             {
-                return Partial("_ErrorDialog", new Exception("User not found"));
+                return Partial("_ErrorPopup", new Exception("Issue with client or with edit"));
             }
         }
 
         public IActionResult OnPostUpdate(Client Input)
         {
             //this updates the client based on the info sent to the form 
-
-
-            var oldClient = _repRepository.GetClient(Input.Id, _appUser.GetUserAsync(User).Result.SalesGroupID);
-
-
-            var comparer = new ObjectsComparer.Comparer<Client>();
-            IEnumerable<Difference> differences;
-            comparer.IgnoreMember<DateTime>();
-            if (!comparer.Compare(Input, oldClient, out differences))
+            var myUser = _appUser?.GetUserAsync(User).Result;
+            if (myUser != null)
             {
-                _repRepository.UpdateClient(Input);
-            }
 
-            pClients = _repRepository.GetClients(_appUser.GetUserAsync(User).Result.SalesGroupID).ToList();
-            return Partial("_ClientList", pClients);
+                var oldClient = _repRepository?.GetClient(Input.Id, myUser.SalesGroupID) ?? new Client();
+
+
+                var comparer = new ObjectsComparer.Comparer<Client>();
+                IEnumerable<Difference> differences;
+                comparer.IgnoreMember<DateTime>();
+
+                if (!comparer.Compare(Input, oldClient, out differences))
+                {
+                    _repRepository?.UpdateClient(Input);
+                }
+
+                var clients = _repRepository?.GetClients(myUser.SalesGroupID);
+                pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
+
+                return Partial("_ClientList", pClients);
+            }
+            else
+            {
+                return Partial("_ErrorDialog", new Exception("Company List Not Found"));
+            }
         }
     }
 }
