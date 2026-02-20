@@ -23,7 +23,7 @@ namespace Web.Pages
         [BindProperty]
         public Client? Input { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGetLoadInital()
         {
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
@@ -31,11 +31,17 @@ namespace Web.Pages
                 //grab all clients in database for display
                 var companies = _repRepository?.GetCompanys(myUser.SalesGroupID);
                 pCompany = companies ?? Enumerable.Empty<Web.Data.Models.Company>();
+
+                return Partial("_ClientList", pCompany);
+            }
+            else
+            {
+                return Partial("_ErrorDialog", new Exception("User not found"));
             }
 
         }
 
-        public ActionResult OnGetDeleteClient(Guid myCompanyID)
+        public IActionResult OnGetDeleteClient(Guid myCompanyID)
         {
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
@@ -50,7 +56,7 @@ namespace Web.Pages
                 }
                 else //the delete did not work 
                 {
-                    return new JsonResult(returnValue);
+                    return Partial("_ErrorDialog", new Exception("Company not deleted"));
                 }
             }
             else
@@ -111,7 +117,7 @@ namespace Web.Pages
             }
         }
 
-        public ActionResult OnGetConfirmDelete(string id)
+        public IActionResult OnGetConfirmDelete(string id)
         {
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
@@ -122,7 +128,7 @@ namespace Web.Pages
             }
             else
             {
-                return Partial("_ErrorDialog", new Exception("User not found"));
+                return Partial("_ErrorPopup", new Exception("Issue with company or with delete"));
             }
         }
 
@@ -137,7 +143,7 @@ namespace Web.Pages
             }
             else
             {
-                return Partial("_ErrorDialog", new Exception("User not found"));
+                return Partial("_ErrorPopup", new Exception("Issue with company or with edit"));
             }
         }
 

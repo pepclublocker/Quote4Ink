@@ -5556,13 +5556,16 @@ textarea.form-control-lg {
 .modal-fullscreen {
   width: 100vw;
   max-width: none;
-  height: 100%;
-  margin: 0;
+  /*height: 100%;*/
+  padding-top: 5px;
+  padding-left:15px;
+  padding-right:25px;
+ 
 }
 .modal-fullscreen .modal-content {
   height: 100%;
-  border: 0;
-  border-radius: 0;
+  border: 10px;
+  border-radius: 25px;
 }
 .modal-fullscreen .modal-header,
 .modal-fullscreen .modal-footer {

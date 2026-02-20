@@ -1,19 +1,23 @@
 ﻿@model Web.Data.Models.Client
 <form hx-post="@Url.Page("/clients/index", "Update")" hx-target="#grid"
       hx-swap="innerHTML">
-    
-    <div class="modal fade" id="confirmationModal" tabindex="-1" >
-        <div class="modal-dialog">
+
+    <div class="modal fade" id="confirmationModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirm Delete of @Model.FirstName @Model.LastName</h5>
+                    <h5 class="modal-title">@Model.FullName Data Sheet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
-
+                    <!--Start modal body -->
                     <div class="row">
-                        <div class="col">
+                        <div class="col-3">
+                            <div class="main-card mb-3 card">
+                                info
+                            </div>
+                        </div>
+                        <div class="col-9">
                             <div class="main-card mb-3 card">
                                 <div class="card-body">
                                     <h5 class="card-title">Client Info</h5>
@@ -59,20 +63,17 @@
                                     <div class="form-row">
                                         <input asp-for="@Model.Id" type="hidden" />
                                         <input asp-for="@Model.CompanyID" type="hidden" />
-                                          <input asp-for="@Model.DateCreated" type="hidden" />
+                                        <input asp-for="@Model.DateCreated" type="hidden" />
                                         <input asp-for="@Model.DateUpdated" type="hidden" />
 
                                     </div>
-
                                 </div>
                             </div>
-                        
-                        </div>
+                        </div> <!---->
+                    </div> <!--row-->
+                </div> <!--End modal body -->
 
-                    </div>
 
-
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 

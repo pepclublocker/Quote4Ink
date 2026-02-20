@@ -38,4 +38,8 @@
     <PackageReference Include="RandomFriendlyNameGenerator" Version="1.0.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\SalesGroup\" />
+  </ItemGroup>
+
 </Project>

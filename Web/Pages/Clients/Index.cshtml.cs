@@ -172,7 +172,7 @@ namespace Web.Pages
             }
             else
             {
-                return Partial("_ErrorDialog", new Exception("Company List Not Found"));
+                return Partial("_ErrorDialog", new Exception("Client List Not Found"));
             }
         }
     }
