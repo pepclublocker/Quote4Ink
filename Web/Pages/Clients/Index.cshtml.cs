@@ -1,3 +1,6 @@
+using Htmx.Net.Toast.Abstractions;
+using Htmx.Net.Toast.Enums;
+using Htmx.Net.Toast.Notyf.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +14,7 @@ using Web.Data.Repository;
 namespace Web.Pages
 {
     [Authorize]
-    public class ClientsModel(UserManager<ApplicationUser> myUser, IRepository repository) : PageModel
+    public class ClientsModel(UserManager<ApplicationUser> myUser, IRepository repository, INotyfService notifyS) : PageModel
     {
         // public readonly ILogger<ClientsModel>? _logger = logger;
         public IRepository? _repRepository { get; } = repository;
@@ -20,12 +23,15 @@ namespace Web.Pages
 
         public IEnumerable<Client> pClients = new List<Client>();
 
+        public INotyfService _notyf { get; } = notifyS;
+
         [BindProperty]
         public Client? Input { get; set; }
 
        
         public IActionResult OnGetLoadInital()
         {
+           
             var myUser = _appUser?.GetUserAsync(User).Result;
 
             if (myUser != null)
@@ -38,33 +44,12 @@ namespace Web.Pages
             }
             else
             {
+                _notyf.Error("An <strong>ERROR</strong> has occured!. <br>You may need to check if you are logged in");
                 return Partial("_ErrorDialog", new Exception("User not found"));
             }
         }
 
-        public IActionResult OnGetDeleteClient(Guid myClientID)
-        {
-            var myUser = _appUser?.GetUserAsync(User).Result;
-            if (myUser != null)
-            {
-                var returnValue = _repRepository?.DeleteClient(myClientID, myUser.SalesGroupID).ToString();
-
-                if (returnValue == "True") //the delete did work
-                {
-                    var clients = _repRepository?.GetClients(myUser.SalesGroupID);
-                    pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
-                    return Partial("_ClientList", pClients);
-                }
-                else //the delete did not work 
-                {
-                    return Partial("_ErrorDialog", new Exception("Client not deleted"));
-                }
-            }
-            else
-            {
-                return Partial("_ErrorDialog", new Exception("User not found"));
-            }
-        }
+        
         public IActionResult OnPostDelete(string id)
         {
             string returnValue = "False";
@@ -94,6 +79,7 @@ namespace Web.Pages
                     // Log the exception (you can use a logging framework like Serilog, NLog, etc.)
                     // For example: _logger.LogError(ex, "Error deleting client with ID {ClientId}", id);
                     //return new JsonResult(new { success = false, message = "An error occurred while deleting the client." });
+                    _notyf.Error("An <strong>ERROR</strong> has occured!. <br>An issue happened with deleting this client");
                     return Partial("_ErrorDialog", ex);
 
                 }
@@ -101,17 +87,19 @@ namespace Web.Pages
 
                 if (returnValue == "True") //the delete did work - return the partial with the updated client list to update the UI
                 {
+                    _notyf.Success("Client was deleted and data integrity maintained.");
                     return Partial("_ClientList", clients);
                 }
                 else  //error --send back full list and the error dialog to display the error message that item did not delete - maybe error message from repository
                 {
-
+                    _notyf.Success("Client was <strong>NOT</strong> deleted.");
                     return Partial("_NotDeleteDialog", clients);
                     //log issue here with data
                 }
             }
             else
             {
+                _notyf.Error("An <strong>ERROR</strong> has occured!. <br>You may need to check if you are logged in");
                 return Partial("_ErrorDialog", new Exception("User not found"));
             }
         }
@@ -127,12 +115,14 @@ namespace Web.Pages
             }
             else
             {
+                _notyf.Error("An <strong>ERROR</strong> has occured!. <br>You may need to check if you are logged in");
                 return Partial("_ErrorPopup", new Exception("Issue with client or with delete"));
             }
         }
 
         public IActionResult OnGetClientEdit(string id)
         {
+           
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
             {
@@ -142,6 +132,7 @@ namespace Web.Pages
             }
             else
             {
+                _notyf.Error("An <strong>ERROR</strong> has occured!. <br>You may need to check if you are logged in");
                 return Partial("_ErrorPopup", new Exception("Issue with client or with edit"));
             }
         }
@@ -163,15 +154,21 @@ namespace Web.Pages
                 if (!comparer.Compare(Input, oldClient, out differences))
                 {
                     _repRepository?.UpdateClient(Input);
+                    _notyf.Success("Client edited and saved!");
+                }
+                else
+                {
+                    _notyf.Information("No changes to client detected.<br> No update made.");
                 }
 
-                var clients = _repRepository?.GetClients(myUser.SalesGroupID);
+                    var clients = _repRepository?.GetClients(myUser.SalesGroupID);
                 pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
-
+               
                 return Partial("_ClientList", pClients);
             }
             else
             {
+                _notyf.Error("An <strong>ERROR</strong> has occured!. <br>You may need to check if you are logged in");
                 return Partial("_ErrorDialog", new Exception("Client List Not Found"));
             }
         }
