@@ -11,10 +11,11 @@ namespace Web.Data.Repository
         {
             // int[] CompList = _context.Companies.Where(y => y.SalesGroupID == __salesGroup).Select(u => u.Id).ToArray().con;
 
-            return _context.Clients.Where(x => x.Active == ActiveUsers);// && _context.Companies.Where(y => y.SalesGroupID == __salesGroup);
+          //  return _context.Clients.Where(x => x.Active == ActiveUsers && _context.Companies.Where(y => y.SalesGroupID == __salesGroup);
 
-         // return _context.Clients.Where(x => x)
-           
+            return _context.Clients.Where(x => x.Active == ActiveUsers && _context.Companies.Where(y => y.SalesGroupID == __salesGroup).Select(u => u.Id).ToArray().Contains(x.CompanyID)).Include(a => a.Company);
+            // return _context.Clients.Where(x => x)
+
         }
 
         public Client GetClient(Guid ClientID, int __salesGroup)
@@ -23,7 +24,7 @@ namespace Web.Data.Repository
             //-must be in sale group of user
             //-must have id selected
 
-            return _context.Clients.Where(x => x.Id == ClientID).FirstOrDefault();
+            return _context.Clients.Where(x => x.Id == ClientID).FirstOrDefault() ?? new Client();
         }
 
         public void SaveClient(Client client)
@@ -35,7 +36,7 @@ namespace Web.Data.Repository
         }
         public void UpdateClient(Client client)
         {
-            var OriginalClient = _context.Clients.Where(x => x.Id == client.Id).FirstOrDefault();
+            var OriginalClient = _context.Clients.Where(x => x.Id == client.Id).FirstOrDefault() ?? new Client();
 
             client.DateCreated = OriginalClient.DateCreated;
             client.Privledged = OriginalClient.Privledged;
@@ -52,8 +53,7 @@ namespace Web.Data.Repository
         }
 
         public bool DeleteClient(Guid ClientID, int __salesGroup)
-        {
-            var xString = false;
+        { 
             var xRows = _context.Clients.Where(x => x.Id == ClientID).FirstOrDefault();
 
             if (xRows != null)

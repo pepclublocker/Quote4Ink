@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Web.Data.Models
 {
    
-    public class _Company
+    public class Company
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

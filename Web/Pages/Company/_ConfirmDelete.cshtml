@@ -1,15 +1,16 @@
-﻿@model Web.Data.Models.Client
+﻿@model Web.Data.Models.Company
 
 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Confirm Delete of <strong>@Model.FullName</strong></h5>
+                <h5 class="modal-title">Confirm Delete of <strong>@Model.Name</strong></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <strong>Are you sure you want to mark this client deleted?</strong><br />
-                This will keep data integrity but remove the client from the list.
+                <strong>Are you sure you want to mark this company deleted?</strong><br />
+                <p>All clients in this company will be unavailable.</p>
+                This will keep data integrity but remove the company and associated clients from the list.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -17,7 +18,7 @@
                 <!-- The confirmation action button -->
                 <button type="button"
                         class="btn btn-danger"
-                        hx-post="@Url.Page("/clients/index", "Delete")"
+                        hx-post="@Url.Page("/comapny/index", "Delete")"
                         hx-vals='{"id":"@Model.Id"}'
                         hx-target="#grid"
                         hx-swap="innerHTML"

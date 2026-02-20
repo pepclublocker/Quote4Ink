@@ -24,7 +24,7 @@ namespace Web.Data
         /// Default company made per Sales Group on creation so that clients can be added without 
         /// hainvg to create a company - refered to as "WALK INS"
         /// </summary>
-        public DbSet<_Company> Companies { get; set; }
+        public DbSet<Company> Companies { get; set; }
         /// <summary>
         /// This is the info about the person who actually orders the product or at least the primary contact 
         /// for an order - usually this person is linked to a company 

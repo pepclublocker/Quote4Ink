@@ -1,98 +1,97 @@
-﻿@page "/clients/{ClientID}"
-@model Web.Pages.ClientManageModel
+﻿@model Web.Data.Models.Client
+<form hx-post="@Url.Page("/clients/index", "Update")" hx-target="#grid"
+      hx-swap="innerHTML">
+    
+    <div class="modal fade" id="confirmationModal" tabindex="-1" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete of @Model.FirstName @Model.LastName</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
 
-@{
-    ViewData["Title"] = "Manage Client Information";
-}
+                    <div class="row">
+                        <div class="col">
+                            <div class="main-card mb-3 card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Client Info</h5>
+
+                                    <div class="form-row">
+                                        <input asp-for="@Model.FirstName" class="form-control" />
+                                        <label class="form-label">First Name</label>
+                                        <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-row">
+                                        <input asp-for="@Model.LastName" class="form-control " />
+                                        <label class="form-label">Last Name</label>
+                                        <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <input asp-for="@Model.Address" class="form-control " />
+                                        <label class="form-label">Address</label>
+                                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <input asp-for="@Model.City" class="form-control " />
+                                        <label class="form-label">City</label>
+                                        <span asp-validation-for="@Model.City" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-row">
+                                        <input asp-for="@Model.State" class="form-control " />
+                                        <label class="form-label">State</label>
+                                        <span asp-validation-for="@Model.State" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-row">
+                                        <input asp-for="@Model.ZipCode" class="form-control " />
+                                        <label class="form-label">Zip Code</label>
+                                        <span asp-validation-for="@Model.ZipCode" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-row">
+                                        <input asp-for="@Model.Email" class="form-control" />
+                                        <label class="form-label">Email</label>
+                                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <input asp-for="@Model.Id" type="hidden" />
+                                        <input asp-for="@Model.CompanyID" type="hidden" />
+                                          <input asp-for="@Model.DateCreated" type="hidden" />
+                                        <input asp-for="@Model.DateUpdated" type="hidden" />
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        
+                        </div>
+
+                    </div>
 
 
-<div class="app-page-title">
-    <div class="page-title-wrapper">
-        <div class="page-title-heading">
-            <div class="page-title-icon">
-                <i class="fa fa-users icon-gradient bg-premium-dark">
-                </i>
-            </div>
-            <div>
-                @if (Model.Input != null)
-                {
-                    <span>Manage Client: <b>@Model.Input.FirstName @Model.Input.LastName</b></span>
-                }
-                else
-                {
-                    <span>Add New Client Info</span>
-                }
-                <div class="page-title-subheading">
-                    Edit and maintain client information.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <!-- The confirmation action button -->
+                    <button type="submit"
+                            class="btn btn-danger"
+                            data-bs-dismiss="modal">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="page-title-actions">
-        </div>
-    </div>
-</div>
-<form asp-page-handler="UpdateClient" asp-route-ClientID="@Model.ClientID" method="post">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="main-card mb-3 card">
-                <div class="card-body">
-                    <h5 class="card-title">Client Info</h5>
-
-                    <div class="form-row">
-                        <input asp-for="Input.FirstName" class="form-control" />
-                        <label class="form-label">First Name</label>
-                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-row">
-                        <input asp-for="Input.LastName" class="form-control " />
-                        <label class="form-label">Last Name</label>
-                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-row">
-                        <select asp-for="Input.CompanyID" asp-items="Model.TagOptions" class="form-control"></select>
-                        <label class="form-label">Company</label>
-
-                    </div>
-                    <div class="form-row">
-                        <input asp-for="Input.Address" class="form-control " />
-                        <label class="form-label">Address</label>
-                        <span asp-validation-for="Input.Address" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-row">
-                        <input asp-for="Input.City" class="form-control " />
-                        <label class="form-label">City</label>
-                        <span asp-validation-for="Input.City" class="text-danger"></span>
-                    </div>
-                    <div class="form-row">
-                        <input asp-for="Input.State" class="form-control " />
-                        <label class="form-label">State</label>
-                        <span asp-validation-for="Input.State" class="text-danger"></span>
-                    </div>
-                    <div class="form-row">
-                        <input asp-for="Input.ZipCode" class="form-control " />
-                        <label class="form-label">Zip Code</label>
-                        <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
-                    </div>
-                    <div class="form-row">
-                        <input asp-for="Input.Email" class="form-control" />
-                        <label class="form-label">Email</label>
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-row">
-                    </div>
-
-                </div>
-            </div>
-            <div class="main-card mb-3 card">
-                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-            </div>
-        </div>
-
     </div>
 </form>
+<!-- JavaScript to show the modal (if using a framework like Bootstrap) -->
+<script>
+    var modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    modal.show();
+</script>
 
 
 

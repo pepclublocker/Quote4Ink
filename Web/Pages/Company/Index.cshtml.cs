@@ -11,14 +11,14 @@ using Web.Data.Repository;
 namespace Web.Pages
 {
     [Authorize]
-    public class ClientsModel(UserManager<ApplicationUser> myUser, IRepository repository) : PageModel
+    public class CompanyModel(UserManager<ApplicationUser> myUser, IRepository repository) : PageModel
     {
         // public readonly ILogger<ClientsModel>? _logger = logger;
         public IRepository? _repRepository { get; } = repository;
 
         public UserManager<ApplicationUser>? _appUser = myUser;
 
-        public IEnumerable<Client> pClients = new List<Client>();
+        public IEnumerable<Web.Data.Models.Company> pCompany = new List<Web.Data.Models.Company>();
 
         [BindProperty]
         public Client? Input { get; set; }
@@ -29,23 +29,24 @@ namespace Web.Pages
             if (myUser != null)
             {
                 //grab all clients in database for display
-                var clients = _repRepository?.GetClients(myUser.SalesGroupID);
-                pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
+                var companies = _repRepository?.GetCompanys(myUser.SalesGroupID);
+                pCompany = companies ?? Enumerable.Empty<Web.Data.Models.Company>();
             }
+
         }
 
-        public ActionResult OnGetDeleteClient(Guid myClientID)
+        public ActionResult OnGetDeleteClient(Guid myCompanyID)
         {
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
             {
-                var returnValue = _repRepository?.DeleteClient(myClientID, myUser.SalesGroupID).ToString();
+                var returnValue = _repRepository?.DeleteClient(myCompanyID, myUser.SalesGroupID).ToString();
 
                 if (returnValue == "True") //the delete did work
                 {
-                    var clients = _repRepository?.GetClients(myUser.SalesGroupID);
-                    pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
-                    return Partial("_ClientList", pClients);
+                    var companies = _repRepository?.GetCompanys(myUser.SalesGroupID);
+                    pCompany = companies ?? Enumerable.Empty<Web.Data.Models.Company>();
+                    return Partial("_ClientList", pCompany);
                 }
                 else //the delete did not work 
                 {
@@ -57,28 +58,29 @@ namespace Web.Pages
                 return Partial("_ErrorDialog", new Exception("User not found"));
             }
         }
+
         public IActionResult OnPostDelete(string id)
         {
             string returnValue = "False";
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
             {
-                List<Client> clients = new List<Client>();
+                List<Web.Data.Models.Company> companies = new List<Web.Data.Models.Company>();
                 try //lets try all the data query first and if any of it fails we can just return the error modal 
                 {
+                    companies = (_repRepository?.GetCompanys(myUser.SalesGroupID) ?? Enumerable.Empty<Web.Data.Models.Company>()).ToList(); //list of clients
 
-                    clients = (_repRepository?.GetClients(myUser.SalesGroupID) ?? Enumerable.Empty<Client>()).ToList(); //list of clients
 
-                    Client? thisClient = clients.FirstOrDefault(x => x.Id == Guid.Parse(id)); //the client we are deleting
+                    Web.Data.Models.Company? thisCompany = companies.FirstOrDefault(x => x.Id == Guid.Parse(id)); //the client we are deleting
 
-                    var deleteResult = _repRepository?.DeleteClient(Guid.Parse(id), myUser.SalesGroupID); //attempt to delete
+                    var deleteResult = _repRepository?.DeleteCompany(Guid.Parse(id), myUser.SalesGroupID);
                     returnValue = deleteResult?.ToString() ?? "False"; //attempt to delete
 
                     if (returnValue == "True")
                     {
-                        if (thisClient != null)
+                        if (thisCompany != null)
                         {
-                            _ = clients.Remove(thisClient); //final list if we succeed in deleting the client
+                            _ = companies.Remove(thisCompany); //final list if we succeed in deleting the client
                         }
                     }
                 }
@@ -94,12 +96,12 @@ namespace Web.Pages
 
                 if (returnValue == "True") //the delete did work - return the partial with the updated client list to update the UI
                 {
-                    return Partial("_ClientList", clients);
+                    return Partial("_CompanyList", companies);
                 }
                 else  //error --send back full list and the error dialog to display the error message that item did not delete - maybe error message from repository
                 {
 
-                    return Partial("_NotDeleteDialog", clients);
+                    return Partial("_NotDeleteDialog", companies);
                     //log issue here with data
                 }
             }
@@ -115,8 +117,8 @@ namespace Web.Pages
             if (myUser != null)
             {
                 //this gets the info about the client we want to delete so we can display it in the confirmation modal
-                var thisClient = _repRepository?.GetClient(Guid.Parse(id), myUser.SalesGroupID);
-                return Partial("_ConfirmDelete", thisClient);
+                var thisCompany = _repRepository?.GetCompany(Guid.Parse(id), myUser.SalesGroupID);
+                return Partial("_ConfirmDelete", thisCompany);
             }
             else
             {
@@ -124,14 +126,14 @@ namespace Web.Pages
             }
         }
 
-        public IActionResult OnGetClientEdit(string id)
+        public IActionResult OnGetCompanyEdit(string id)
         {
             var myUser = _appUser?.GetUserAsync(User).Result;
             if (myUser != null)
             {
                 //this gets the info about the client we want to delete so we can display it in the confirmation modal
-                var thisClient = _repRepository?.GetClient(Guid.Parse(id), myUser.SalesGroupID);
-                return Partial("_ClientManage", thisClient);
+                var thisCompany = _repRepository?.GetCompany(Guid.Parse(id), myUser.SalesGroupID);
+                return Partial("_ClientManage", thisCompany);
             }
             else
             {
@@ -139,24 +141,36 @@ namespace Web.Pages
             }
         }
 
-        public IActionResult OnPostUpdate(Client Input)
+        public IActionResult OnPostUpdate(Web.Data.Models.Company Input)
         {
             //this updates the client based on the info sent to the form 
 
-
-            var oldClient = _repRepository.GetClient(Input.Id, _appUser.GetUserAsync(User).Result.SalesGroupID);
-
-
-            var comparer = new ObjectsComparer.Comparer<Client>();
-            IEnumerable<Difference> differences;
-            comparer.IgnoreMember<DateTime>();
-            if (!comparer.Compare(Input, oldClient, out differences))
+            var myUser = _appUser?.GetUserAsync(User).Result;
+            if (myUser != null)
             {
-                _repRepository.UpdateClient(Input);
-            }
+                Web.Data.Models.Company oldCompany = _repRepository?.GetCompany(Input.Id, myUser.SalesGroupID) ?? new Web.Data.Models.Company();
 
-            pClients = _repRepository.GetClients(_appUser.GetUserAsync(User).Result.SalesGroupID).ToList();
-            return Partial("_ClientList", pClients);
+                //if oldCompany is null - this maybe a new company - check on this 
+                var comparer = new ObjectsComparer.Comparer<Web.Data.Models.Company>();
+                IEnumerable<Difference> differences;
+                comparer.IgnoreMember<DateTime>();
+
+                var x = comparer.Compare(Input, oldCompany, out differences);
+
+                if (!comparer.Compare(Input, oldCompany, out differences))
+                {
+                    _repRepository?.UpdateCompany(Input);
+                }
+
+                var companies = _repRepository?.GetCompanys(myUser.SalesGroupID);
+                pCompany = companies ?? Enumerable.Empty<Web.Data.Models.Company>();
+
+                return Partial("_ClientList", pCompany);
+            }
+            else
+            {
+                return Partial("_ErrorDialog", new Exception("Company List Not Found"));
+            }
         }
     }
 }
