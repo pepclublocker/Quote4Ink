@@ -17,7 +17,7 @@ namespace Web.Data
         /// This is information about the company the users work for used as a bucket to keep 
         /// invoices and such seperate 
         /// </summary>
-        public DbSet<_SalesGroup> SalesGroups { get; set; }
+        public DbSet<SalesGroup> SalesGroups { get; set; }
         /// <summary>
         /// This is the company that a client may work for is used to link multiple people for one organization 
         /// that may order seperately - mostly used for organization and billing

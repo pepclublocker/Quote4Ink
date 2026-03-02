@@ -1,0 +1,149 @@
+﻿@model Web.Data.Models.SalesGroup
+
+<div class="row project-cards">
+
+
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-xxl-6 col-lg-12 box-col-12">
+                        <div class="project-box project-box2 b-light1-primary">
+                            <a class="badge badgeedit badge-primary"
+                               hx-get="@Url.Page("/salesgroup/index", "ShopManage")"
+                               hx-vals='{"id":""}'
+                               hx-target="#modal-container"
+                               hx-indicator="#htmx-spinner"
+                               hx-swap="innerHTML">
+                                <i class="icofont icofont-edit-alt"></i>
+                                Edit
+                            </a>
+
+
+
+                            <h3 class="f-w-500 text-decoration-underline">
+
+
+
+                                My Print Shop Info
+
+                            </h3>
+                            <div class="d-flex">
+
+
+                                <div class="flex-grow-1">
+                                    <h4 class="f-w-700 font-primary">
+                                        @Model.SalesGroupName
+                                    </h4>
+                                </div>
+                            </div>
+
+                            <div class="row details">
+                                <div class="col-6"><span>Shop General Email </span></div>
+                                <div class="col-6 font-primary">@Model.SalesGroupEmail </div>
+                                <div class="col-6"> <span>Shop Address</span></div>
+                                <div class="col-6 font-primary">
+                                    @Model.Address1<br />
+                                    @if (Model.Address2 != string.Empty)
+                                    {
+                                        <br />
+                                        @Model.Address2
+                                    }
+
+                                    @Model.City
+                                    @if (Model.City != string.Empty)
+                                    {
+                                        <span>,</span>
+                                    }
+                                    @Model.Region @Model.PostalCode
+
+                                </div>
+                                <div class="col-6"> <span>Shop Phone</span></div>
+                                <div class="col-6 font-primary">
+                                    @String.Format("{0:(###) ###-####}", double.Parse(Model.PhoneNumber))
+                                </div>
+
+
+                                <ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12">
+
+    <div class="row">
+        <hr />
+    </div>
+
+</div>
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xxl-4 col-lg-6 box-col-6">
+
+                    <div class="project-box project-box2 b-light1-primary">
+                        <a class="badge badgeedit badge-primary"
+                           hx-get="@Url.Page("/salesgroup/index", "SandSEdit")"
+                           hx-vals='{"id":""}'
+                           hx-target="#modal-container"
+                           hx-indicator="#htmx-spinner"
+                           hx-swap="innerHTML">
+                            <i class="icofont icofont-edit-alt"></i>
+                            Edit
+                        </a>
+                        <h3 class="f-w-500 text-decoration-underline">
+                            S and S Activewear<br />API Settings
+                        </h3>
+
+
+                        <div class="row details">
+                            <div class="col-6"><span>S & S Account Number </span></div>
+                            <div class="col-6 font-primary">@Model.SandSAccountNumber </div>
+                            <div class="col-6"> <span>S & S API Key</span></div>
+                            <div class="col-6 font-primary">@Model.SandSAPIKey</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xxl-4 col-lg-6 box-col-6">
+                    <div class="project-box project-box2 b-light1-primary">
+                        <a class="badge badgeedit badge-primary"
+                           hx-get="@Url.Page("/salesgroup/index", "StripeEdit")"
+                           hx-vals='{"id":""}'
+                           hx-target="#modal-container"
+                           hx-indicator="#htmx-spinner"
+                           hx-swap="innerHTML">
+                            <i class="icofont icofont-edit-alt"></i>
+                            Edit
+                        </a>
+                        <h3 class="f-w-500 text-decoration-underline">
+                            Stripe Payment<br />API Settings
+                        </h3>
+
+
+                        <div class="row details">
+                            <div class="col-6"><span>Public Key </span></div>
+                            <div class="col-6 font-primary">@Model.StripePublicKey </div>
+                            <div class="col-6"> <span>Private Key</span></div>
+                            <div class="col-6 font-primary">@Model.StripePrivateKey</div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

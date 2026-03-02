@@ -1,0 +1,67 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="fa fa-industry icon-gradient bg-premium-dark">
+                </i>
+            </div>
+            <div>
+                Customer Companies
+                <div class="page-title-subheading">
+                    Edit and maintain company information.
+                </div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+
+            <div class="d-inline-block dropdown">
+                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-business-time fa-w-20"></i>
+                    </span>
+                    Customer Options
+                </button>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                    <ul class="nav flex-column">
+
+                        <li class="nav-item">
+                            <a asp-page="/Clients/ClientManage" asp-route-clientid="0" class="nav-link">
+                                <i class="nav-link-icon lnr-book"></i>
+                                <span>
+                                    Add Customer
+                                </span>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/Company/CompanyManage" asp-route-compid="0" class="nav-link">
+                                <i class="nav-link-icon lnr-book"></i>
+                                <span>
+                                    Add Company
+                                </span>
+
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <span>
+
+        This area gives info on email confirmation and the need to set password
+
+    </span>
+</div>

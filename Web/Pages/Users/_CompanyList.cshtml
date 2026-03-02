@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Web.Data.Models.Client>
+﻿@model IEnumerable<Web.Data.Models.Company>
 
 <div class="row project-cards">
     <div class="col-md-12 project-list">
@@ -10,9 +10,9 @@
                         <li style="margin:1px;"><a href="javascript:filterSelection('all');" class="badge badge-primary nav-item">ALL</a></li>
                         @{
                             List<string> _intals = new List<string>();
-                            foreach (var _client in Model.OrderBy(a => a.LastName))
+                            foreach (var _company in Model.OrderBy(a => a.Name))
                             {
-                                _intals.Add(_client.LastName.Substring(0, 1).ToUpper());
+                                _intals.Add(_company.Name.Substring(0, 1).ToUpper());
                             }
                             _intals = _intals.Distinct().ToList();
 
@@ -24,14 +24,7 @@
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group mb-0 me-0"></div><a class="badge badge-primary float-end"   
-                                   hx-get="@Url.Page("/clients/index", "ClientEdit")"
-                                   hx-vals='{"id":""}'
-                                   hx-target="#modal-container"
-                                   hx-indicator="#htmx-spinner"
-                                   hx-swap="innerHTML">
-                                  
-                               <i class="icofont icofont-ui-add"></i> Add New Client</a>
+                    <div class="form-group mb-0 me-0"></div><a class="badge badge-primary float-end" href="projectcreate.html"> <i class="icofont icofont-ui-add"></i> Add New Company</a>
                 </div>
             </div>
         </div>
@@ -40,13 +33,13 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    @foreach (var _client in Model.OrderBy(a => a.LastName))
+                    @foreach (var _company in Model.OrderBy(a => a.Name))
                     {
-                        <div class="col-xxl-4 col-lg-6 box-col-6" id="filter-@_client.LastName.Substring(0, 1).ToUpper()">
+                        <div class="col-xxl-4 col-lg-6 box-col-6" id="filter-@_company.Name.Substring(0, 1).ToUpper()">
                             <div class="project-box project-box2 b-light1-primary">
                                 <a class="badge badgeedit badge-primary"
-                                   hx-get="@Url.Page("/clients/index", "ClientEdit")"
-                                   hx-vals='{"id":"@_client.Id"}'
+                                   hx-get="@Url.Page("/comapny/index", "ClientEdit")"
+                                   hx-vals='{"id":"@_company.Id"}'
                                    hx-target="#modal-container"
                                    hx-indicator="#htmx-spinner"
                                    hx-swap="innerHTML">
@@ -54,20 +47,20 @@
                                     Edit
                                 </a>
 
-                                <h5 class="f-w-500">@_client.FullName</h5>
+                                <h5 class="f-w-500">@_company.Name</h5>
                                 <div class="d-flex">
                                     <i class="icofont icofont-company" style="font-size:25px; padding-right:5px;"></i>
 
                                     <div class="flex-grow-1">
-                                        <h1 class="f-w-700 font-primary">@_client.Company.Name</h1>
+                                        <h1 class="f-w-700 font-primary">xx</h1>
                                     </div>
                                 </div>
 
                                 <div class="row details">
                                     <div class="col-6"><span>Created Date </span></div>
-                                    <div class="col-6 font-primary">@_client.DateCreated.Date.ToShortDateString() </div>
+                                    <div class="col-6 font-primary">@_company.DateCreated.Date.ToShortDateString() </div>
                                     <div class="col-6"> <span>Updated Date</span></div>
-                                    <div class="col-6 font-primary">@_client.DateUpdated.Date.ToShortDateString()</div>
+                                    <div class="col-6 font-primary">@_company.DateUpdated.Date.ToShortDateString()</div>
                                     <div class="col-6"> <span>Current Quotes</span></div>
                                     <div class="col-6 font-primary">XX</div>
                                     <div class="col-6"> <span>Total Quotes</span></div>
@@ -77,11 +70,12 @@
 
 
                                 <a href="#" class="badge badge-danger badgedelete"
-                                   hx-get="@Url.Page("/clients/index", "ConfirmDelete")"
-                                   hx-vals='{"id":"@_client.Id"}'
+                                   hx-get="@Url.Page("/company/index", "ConfirmDelete")"
+                                   hx-vals='{"id":"@_company.Id"}'
                                    hx-target="#modal-container"
                                    hx-swap="innerHTML"
-                                   disabled="@_client.Privledged">
+                                 @*   disabled="@_company.Privledged" *@
+                                >
                                     <i class="icofont icofont-ui-delete"></i>
                                     Delete
                                 </a>

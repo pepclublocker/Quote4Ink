@@ -28,10 +28,10 @@ namespace Web.Pages
         [BindProperty]
         public Client? Input { get; set; }
 
-       
+
         public IActionResult OnGetLoadInital()
         {
-           
+
             var myUser = _appUser?.GetUserAsync(User).Result;
 
             if (myUser != null)
@@ -49,7 +49,7 @@ namespace Web.Pages
             }
         }
 
-        
+
         public IActionResult OnPostDelete(string id)
         {
             string returnValue = "False";
@@ -122,12 +122,15 @@ namespace Web.Pages
 
         public IActionResult OnGetClientEdit(string id)
         {
-           
+
             var myUser = _appUser?.GetUserAsync(User).Result;
+            var thisClient = new Client();
             if (myUser != null)
             {
-                //this gets the info about the client we want to delete so we can display it in the confirmation modal
-                var thisClient = _repRepository?.GetClient(Guid.Parse(id), myUser.SalesGroupID);
+                if (id != String.Empty && id != null)
+                {
+                    thisClient = _repRepository?.GetClient(Guid.Parse(id), myUser.SalesGroupID);
+                }
                 return Partial("_ClientManage", thisClient);
             }
             else
@@ -161,9 +164,9 @@ namespace Web.Pages
                     _notyf.Information("No changes to client detected.<br> No update made.");
                 }
 
-                    var clients = _repRepository?.GetClients(myUser.SalesGroupID);
+                var clients = _repRepository?.GetClients(myUser.SalesGroupID);
                 pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
-               
+
                 return Partial("_ClientList", pClients);
             }
             else

@@ -1,0 +1,23 @@
+﻿@page
+
+
+
+@model Web.Pages.SalesGroupModel
+
+
+
+@{
+    ViewData["Title"] = "Manage My Print Shop";
+}
+
+
+
+<div id="grid">
+    <div hx-boost="true" hx-get="@Url.Page("/salesgroup/index", "LoadInital")" hx-swap="outerHTML" hx-trigger="load"></div>
+</div>
+<div id="modal-container"></div>
+
+
+
+
+

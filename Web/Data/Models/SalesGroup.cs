@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Web.Data.Models
 {
-  
-    public class _SalesGroup
+
+    public class SalesGroup
     {
         [Key]
         public int Id { get; set; }
@@ -21,8 +21,11 @@ namespace Web.Data.Models
         public string Address1 { get; set; } = string.Empty;
         public string Address2 { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
-        public string Region { get; set; } = string.Empty;
+        public string Region { get; set; } = string.Empty;      
         public string PostalCode { get; set; } = string.Empty;
+
+        [StringLength(15)]
+        public string PhoneNumber { get; set; } = string.Empty;
 
         //public ICollection<Store> Stores; - this is for later when we add stores for 'popup' type sales
 

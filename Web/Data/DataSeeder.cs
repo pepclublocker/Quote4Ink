@@ -15,7 +15,7 @@ namespace Web.Data
             if (!context.SalesGroups.Where(x => x.Id == 1).Any())
             {
 
-                context.SalesGroups.Add(new _SalesGroup()
+                context.SalesGroups.Add(new SalesGroup()
                 {
                     Id = 1,
                     SalesGroupName = "Default Name",

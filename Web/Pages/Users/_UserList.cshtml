@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Web.Data.Models
+
+@model List<System.Collections.Generic.KeyValuePair<Web.Data.Models.ApplicationUser, System.Collections.Generic.List<Microsoft.AspNetCore.Identity.IdentityRole>>>
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<div class="row project-cards">
+    <div class="col-md-12 project-list">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist">
+                        <li class="nav-item"><span class="badge badge-primary" style="margin-right:5px">Last Name Filter:</span></li>
+                        <li style="margin:1px;"><a href="javascript:filterSelection('all');" class="badge badge-primary nav-item">ALL</a></li>
+                        @{
+                            List<string> _intals = new List<string>();
+                            foreach (var _User in Model.OrderBy(a => a.Key.LastName))
+                            {
+                                _intals.Add(_User.Key.LastName.Substring(0, 1).ToUpper());
+                            }
+                            _intals = _intals.Distinct().ToList();
+
+                            foreach (var _intal in _intals)
+                            {
+                                <li style="margin:1px;"><a href="javascript:filterSelection('@_intal');" class="badge badge-primary nav-item">@_intal</a></li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-0 me-0"></div><a class="badge badge-primary float-end" href="projectcreate.html"> <i class="icofont icofont-ui-add"></i> Add New Company</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var _user in Model.OrderBy(a => a.Key.LastName))
+                    {
+                        <div class="col-xxl-4 col-lg-6 box-col-6" id="filter-@_user.Key.LastName.Substring(0, 1).ToUpper()">
+                            <div class="project-box project-box2 b-light1-primary">
+                                <a class="badge badgeedit badge-primary"
+                                   hx-get="@Url.Page("/comapny/index", "ClientEdit")"
+                                   hx-vals='{"id":"@_user.Key.Id"}'
+                                   hx-target="#modal-container"
+                                   hx-indicator="#htmx-spinner"
+                                   hx-swap="innerHTML">
+                                    <i class="icofont icofont-edit-alt"></i>
+                                    Edit
+                                </a>
+
+                                @if (_user.Value.Where(a => a.Name == "Administrator").Count() < 1)
+                                {
+
+                                    @if ((User.IsInRole("Administrator") || User.IsInRole("Owner")) && (_user.Value.Where(a => a.Name == "Administrator").Count() < 1))
+                                    {
+
+                                    }
+                                    <a class="btn btn-primary btn-sm" asp-page="/users/UserManage" asp-route-compid="@_user.Key.Id">
+                                        Edit
+                                    </a>
+
+                                    <button type="button" class="btn btn-danger btn-sm deleteUser" data-userid="@_user.Key.Id">
+                                        Delete
+                                    </button>
+                                }
+
+                                <h5 class="f-w-500">
+                                    @if (_user.Key.LockedOut)
+                                    {
+
+                                        <i class="icofont icofont-lock" style="color:red;font-size:20px;"></i>
+
+                                    }
+                                    else
+                                    {
+                                        <i class="icofont icofont-unlock" style="color:green;font-size:20px;"></i>
+                                    }
+
+                                    @_user.Key.UserName
+                                    @_user.Key.FirstName @_user.Key.LastName
+                                </h5>
+                                <div class="d-flex">
+
+                                    @if (!_user.Key.EmailConfirmed)
+                                    {
+                                        <i class="icofont icofont-email" style="color:red;font-size:25px;"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="icofont icofont-email" style="color:green;font-size:25px;"></i>
+                                    }
+                                    &nbsp;
+
+                                    <div class="flex-grow-1">
+                                        <h4 class="f-w-700 font-primary">
+                                            @(_user.Key.Email != null ? _user.Key.Email.ToLower() : "No Email")
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                <div class="row details">
+                                    <div class="col-6"><span>Created Date </span></div>
+                                    <div class="col-6 font-primary">xx </div>
+                                    <div class="col-6"> <span>Updated Date</span></div>
+                                    <div class="col-6 font-primary">xx</div>
+                                    <div class="col-6"> <span>Current Quotes</span></div>
+                                    <div class="col-6 font-primary">XX</div>
+                                    <div class="col-6"> <span>Total Quotes</span></div>
+                                    <div class="col-6 font-primary">XX</div>
+                                    <div class="col-6"> <span>Roles</span></div>
+                                    <div class="col-6 font-primary">
+                                        <ul>
+                                            @foreach (var y in _user.Value)
+                                            {
+                                                <li>@y.Name</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
