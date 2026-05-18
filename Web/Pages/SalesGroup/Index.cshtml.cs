@@ -16,7 +16,7 @@ namespace Web.Pages
     {
         public IRepository? _repRepository { get; } = repository;
 
-        public UserManager<ApplicationUser>? _appUser = myUser;
+        public UserManager<ApplicationUser>? _appUser = myUser ;
         public Web.Data.Models.SalesGroup salesGroup { get; set; } = new Web.Data.Models.SalesGroup();
 
         public INotyfService _notyf { get; } = notifyS;
@@ -88,8 +88,8 @@ namespace Web.Pages
                 return Page();
             }
 
-            Input.Id = (await _appUser.GetUserAsync(User)).SalesGroupID;
-            _repRepository.UpdateSalesGroup(Input);
+            Input!.Id = (await _appUser!.GetUserAsync(User)?? new ApplicationUser()).SalesGroupID;
+            _repRepository?.UpdateSalesGroup(Input);
 
 
 

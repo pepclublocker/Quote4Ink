@@ -31,9 +31,16 @@ namespace Web.Data
         /// </summary>
         public DbSet<Client> Clients { get; set; }
 
+        public DbSet<BlankCategory> BlankCategories { get; set; } 
+        public DbSet<BlankProduct> BlankProducts { get; set; }
+        public DbSet<BlankSanMar> BlankSanMars { get; set; }
+        public DbSet<BlankStyle> BlankStyles { get; set; }
 
+        public DbSet<PriceMatrix> PriceMatrices { get; set; }
 
+        public DbSet<PriceMatrixPrice> PriceMatrixPrices { get; set; }
 
+        public DbSet<PriceMatrixProperties> PriceMatrixProperties { get; set; }
 
 
         //        protected override void OnModelCreating(ModelBuilder modelBuilder)

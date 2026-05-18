@@ -1,0 +1,47 @@
+﻿@using Web.Data.Models
+@model IEnumerable<PriceMatrix>
+
+
+<table style="width:100%;white-space:nowrap" class="table table-hover table-secondary" id="example">
+    <thead>
+        <tr class="table-light">
+          
+
+
+            <th style="width:100%">Name</th>
+            <th>Date Created</th>
+            <th>Date Changed</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody class="table-group-divider">
+        @foreach (var _matrix in Model)
+        {
+            <tr>
+                
+
+                <td>@_matrix.MatrixName</td>
+
+                <td>@_matrix.DateCreated.Date.ToShortDateString()</td>
+                <td>@_matrix.DateUpdated.Date.ToShortDateString()</td>
+                <td>
+
+                    <a class="btn btn-primary btn-sm" asp-page="/Matrix/MatrixManage" asp-route-matrixid="@_matrix.Id">
+                        Edit
+                    </a>
+
+                    <button type="button" class="btn btn-danger btn-sm deleteComp" data-compid="@_matrix.Id">
+                        Delete
+                    </button>
+
+                </td>
+            </tr>
+        }
+
+
+
+    </tbody>
+
+
+</table>

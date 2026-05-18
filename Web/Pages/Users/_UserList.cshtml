@@ -42,8 +42,9 @@
                 <div class="row">
                     @foreach (var _user in Model.OrderBy(a => a.Key.LastName))
                     {
-                        <div class="col-xxl-4 col-lg-6 box-col-6" id="filter-@_user.Key.LastName.Substring(0, 1).ToUpper()">
-                            <div class="project-box project-box2 b-light1-primary">
+                        <div class="col-xxl-4 col-lg-6 box-col-6" id="filter-@_user.Key.LastName.Substring(0, 1).ToUpper()" style="margin-top:10px">
+                            
+                            <div class="project-box project-box2 b-light1-primary" style="height:100%;border:1px solid black;">
                                 <a class="badge badgeedit badge-primary"
                                    hx-get="@Url.Page("/comapny/index", "ClientEdit")"
                                    hx-vals='{"id":"@_user.Key.Id"}'

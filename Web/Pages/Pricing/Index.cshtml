@@ -1,0 +1,57 @@
+﻿@page
+@model Web.Pages.PricingModel
+
+<div id="grid" >
+    <div hx-boost="true" hx-get="@Url.Page("/pricing/index", "LoadInital")" hx-swap="outerHTML" hx-trigger="load"></div>
+</div>
+<div id="modal-container"></div>
+
+<div id="htmx-spinner" class="htmx-indicator">
+    <!-- Use an SVG spinner or text here -->
+    Loading...
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function filterSelection(c) {
+          if (c == "all")
+          {
+              $("[id^='filter-']").show();
+          }
+          else
+          {
+            $("[id^='filter-']").hide();
+             $("[id^='filter-" + c + "']").show();
+           var s = 1;
+          };
+        };
+    </script>
+
+    <style>
+        .htmx-indicator {
+            opacity: 0;
+            transition: opacity 200ms ease-in; /* Optional: for a smooth fade-in */
+        }
+
+        /* Show the spinner when the htmx-request class is present */
+        .htmx-request .htmx-indicator {
+            opacity: 1;
+        }
+
+        #grid:disabled {
+            display: none;
+        }
+        /* Style for all elements with the 'disabled' attribute, even non-form ones */
+        [disabled] {
+            pointer-events: none; /* Prevents mouse clicks */
+            opacity: 0.5; /* Visually indicates a disabled state */
+            cursor: not-allowed; /* Changes the cursor */
+        }
+
+            /* Also ensure keyboard navigation is handled by setting tabindex to -1 */
+            [disabled]:focus {
+                tabindex: -1; /* Prevents focus via keyboard tabbing */
+            }
+
+    </style>
+}

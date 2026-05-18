@@ -53,7 +53,9 @@ namespace Web.Pages
 
             if (result.Succeeded)
             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 Users = _repRepository.GetMyUsers();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 return Partial("_UserList", Users);
             }
             else

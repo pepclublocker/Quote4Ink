@@ -50,12 +50,12 @@ namespace Web.Data.Repository
 
         public SalesGroup GetMySalesGroup(int ii__salesGroup)
         {
-            return _context.SalesGroups.FirstOrDefault(x => x.Id == ii__salesGroup);
+            return _context.SalesGroups.FirstOrDefault(x => x.Id == ii__salesGroup) ?? new SalesGroup();
         }
 
         public SalesGroup GetStripeSalesGroup(string StripCustomerID)
         {
-            return _context.SalesGroups.FirstOrDefault(x => x.StripeAccountNumber == StripCustomerID);
+            return _context.SalesGroups.FirstOrDefault(x => x.StripeAccountNumber == StripCustomerID) ?? new SalesGroup();
         }
 
 

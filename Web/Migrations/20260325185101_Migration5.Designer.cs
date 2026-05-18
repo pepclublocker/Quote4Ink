@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Data;
 
@@ -11,13 +12,15 @@ using Web.Data;
 namespace Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260325185101_Migration5")]
+    partial class Migration5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.7")
+                .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -735,114 +738,6 @@ namespace Web.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("Web.Data.Models.PriceMatrix", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("Markup")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("MatrixName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaxColors")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MinUnits")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SalesGroupID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SalesGroupID");
-
-                    b.ToTable("PriceMatrices");
-                });
-
-            modelBuilder.Entity("Web.Data.Models.PriceMatrixPrice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Color")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LevelMaxCount")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("MatrixId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("OtherPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MatrixId");
-
-                    b.ToTable("PriceMatrixPrices");
-                });
-
-            modelBuilder.Entity("Web.Data.Models.PriceMatrixProperties", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Descript")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LowerThreshold")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PropertyAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("PropertyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PropertyType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SalesGroupID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UpperThreshold")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PriceMatrixProperties");
-                });
-
             modelBuilder.Entity("Web.Data.Models.SalesGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -976,28 +871,6 @@ namespace Web.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Web.Data.Models.PriceMatrix", b =>
-                {
-                    b.HasOne("Web.Data.Models.SalesGroup", "SalesGroup")
-                        .WithMany()
-                        .HasForeignKey("SalesGroupID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SalesGroup");
-                });
-
-            modelBuilder.Entity("Web.Data.Models.PriceMatrixPrice", b =>
-                {
-                    b.HasOne("Web.Data.Models.PriceMatrix", "PriceMatrix")
-                        .WithMany()
-                        .HasForeignKey("MatrixId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PriceMatrix");
                 });
 #pragma warning restore 612, 618
         }

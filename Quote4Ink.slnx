@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Quote4Ink_DataLoader/Quote4Ink_DataLoader.csproj" Id="89b30e6c-b61d-4ff6-8fa2-f6e2687787b0" />
   <Project Path="Web/Web.csproj" />
 </Solution>
