@@ -13,7 +13,7 @@ Update the project-level `SSH.NET` reference in `Quote4Ink_DataLoader/Quote4Ink_
 
 **Done when**: `Quote4Ink_DataLoader` builds and the audit no longer reports SSH.NET advisories GHSA-q939-rpr3-3284 or GHSA-mggc-4xg6-vcxf.
 
-#### 01.01-web-package-advisories: Resolve Web project package advisories
+#### 01.01-web-advisory-upgrade: Resolve Web project package advisories
 
 In `Web/Web.csproj`, update NuGet.Packaging to 7.9.0, add a direct NuGet.Protocol 7.9.0 reference to override the vulnerable 6.12.1 transitive dependency, and add `SQLitePCLRaw.bundle_e_sqlite3` 3.0.5 to update the vulnerable transitive native library. The dependency chain is `Microsoft.EntityFrameworkCore.Sqlite` → `SQLitePCLRaw.bundle_e_sqlite3` → `SQLitePCLRaw.lib.e_sqlite3`.
 

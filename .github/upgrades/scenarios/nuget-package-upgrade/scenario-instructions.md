@@ -17,6 +17,7 @@ Upgrade the affected package dependency chains to assessment-recommended stable 
 - Add `SQLitePCLRaw.bundle_e_sqlite3` 3.0.5 in `Web` to update its transitive `SQLitePCLRaw.lib.e_sqlite3` dependency.
 - The quick assessment found four removed NuGet.Protocol members but no source matches; validate with solution builds and a vulnerability audit.
 - User approved finalizing the original SSH.NET fix as complete while continuing the newly added advisory tasks.
+- User approved replacing the stale, unmodified Web task entry with a fresh task entry and continuing the package updates.
 
 ## Source Control
 - **Source Branch**: `master`
