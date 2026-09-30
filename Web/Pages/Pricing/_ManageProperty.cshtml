@@ -1,0 +1,71 @@
+﻿@model QuotedInk.Data.Models.PriceMatrixProperties
+
+
+
+<form method="post" asp-page-handler="saveproperty" id="matrixPropForm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Property</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="PropertyName" class="control-label">Property Name</label>
+                    <input asp-for="PropertyName" class="form-control" />
+                    <span asp-validation-for="PropertyName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PropertyType" class="control-label">Type of Charge</label>
+            
+
+                    <select class="form-control" asp-for="PropertyType">
+                        @foreach (var item in Enum.GetValues<QuotedInk.Data.Models.Enums.PropertyTypes>())
+                        {
+                            <option value="@((int)@item)">@item.GetAttributeName()</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PropertyType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PropertyAmount" class="control-label">Cost</label>
+                    <input asp-for="PropertyAmount" class="form-control" />
+                    <span asp-validation-for="PropertyAmount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LowerThreshold" class="control-label">Smallest number of items for Charge</label>
+                    <input asp-for="LowerThreshold" class="form-control" />
+                    <span asp-validation-for="LowerThreshold" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UpperThreshold" class="control-label">Maximum number of items for Charge (0 for unlimited)</label>
+                    <input asp-for="UpperThreshold" class="form-control" />
+                    <span asp-validation-for="UpperThreshold" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsActive" /> Is charge active
+                    </label>
+                </div>
+                @*   <div class="form-group">
+                <label asp-for="PriceMatrixProperties.PriceMatrixID" class="control-label"></label>
+                <select asp-for="PriceMatrixProperties.PriceMatrixID" class ="form-control" asp-items="ViewBag.PriceMatrixID"></select>
+                </div> *@
+
+                <input asp-for="Id" class="form-control" type="hidden" />
+                <!--    <input asp-for="PriceMatrixID" class="form-control" type="hidden" />-->
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="dataCancelProp">Cancel</button>
+                <button type="button" class="btn btn-primary" id="dataSubmitProp">Save</button>
+            </div>
+        </div>
+    </div>
+</form>
+

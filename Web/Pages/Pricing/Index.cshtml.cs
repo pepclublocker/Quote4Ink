@@ -38,9 +38,9 @@ namespace Web.Pages
             {
 
                 //grab all clients in database for display
-                var clients = _repRepository?.GetClients(myUser.SalesGroupID);
-                pClients = clients ?? Enumerable.Empty<Web.Data.Models.Client>();
-                return Partial("_ClientList", pClients);
+                var cLPricing = _repRepository?.GetMatrixies(myUser.SalesGroupID);
+                cLPricing = cLPricing ?? Enumerable.Empty<Web.Data.Models.PriceMatrix>();
+                return Partial("_PricingList", cLPricing);
             }
             else
             {

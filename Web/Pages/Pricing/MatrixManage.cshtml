@@ -1,0 +1,152 @@
+﻿@page "/matrix/{MatrixID}"
+@model Web.Pages._WPMatrixManageModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="pe-7s-display2 icon-gradient bg-mean-fruit">
+                </i>
+            </div>
+            <div>
+                Edit Matrix
+                <div class="page-title-subheading">
+                    Edit pricing matrix
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="main-card card">
+
+            <div class="card-body">
+                <form method="post">
+                    <h5 class="card-title">Matrix Pricing Info</h5>
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="PriceMatrix.Id" />
+                    <div class="form-group">
+                        <label asp-for="PriceMatrix.MatrixName" class="control-label"></label>
+                        <input asp-for="PriceMatrix.MatrixName" class="form-control" />
+                        <span asp-validation-for="PriceMatrix.MatrixName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PriceMatrix.MinUnits" class="control-label">Minimum Units</label>
+                        <input asp-for="PriceMatrix.MinUnits" class="form-control" />
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PriceMatrix.Markup" class="control-label">Blank Markup (%)</label>
+                        <input asp-for="PriceMatrix.Markup" class="form-control" />
+
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input asp-for="PriceMatrix.IsActive" class="form-check-input" /> Price Matrix is Active
+                        </label>
+
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input asp-for="PriceMatrix.IsDefault" class="form-check-input" />  Default Price Matrix
+                        </label>
+
+                    </div>
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="main-card card">
+            <div class="card-body">
+                <h5 class="card-title">Matrix Pricing Fees</h5>              
+                <button class="btn btn-primary btn-sm editProp" data-propid="0" data-matrixid="@Model.PriceMatrix.Id">New</button>
+            </div>
+
+            <div class="card-body">
+                <span id="PropertyList">
+                    <partial name="_MatrixProperties" model="Model.MatrixProps" />
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    &nbsp;
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card card">
+
+         
+            <div class="card-body">
+
+                <h5 class="card-title"> Price Matrix</h5>
+                <span id="PriceMatrix">
+
+                    <partial name="_Matrix" model="Model.MatrixPrices" view-data="ViewData" />
+                </span>
+                <div id="loadingHTML" class="overlay-box">
+                    <partial name="__Loading" />
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="row">
+    &nbsp;
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 ">
+            <button id="update-profile-button" type="submit" asp-page-handler="MatrixGroup" class="btn btn-lg btn-primary form-group">Save</button>  <button asp-page-handler="CancelGroup" class="btn btn-lg btn-danger form-group">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+
+        <environment include="Development">
+            <p> (Debug)</p>
+        </environment>
+
+    }
+    <script src="~/js/pages.matrix.matrixmanage.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/pages.matrix.matrixmanage.css" />
+
+
+}
+
+<!-- Modals-->
+<div class="modal fade" role="dialog" id="edit-property-modal">
+    <partial name="_ManageProperty" model="@Model.PriceMatrixProperties" />
+</div>
+
+
+
+

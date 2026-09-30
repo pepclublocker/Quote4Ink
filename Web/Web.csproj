@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Pricing\MAtrixManage.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Pricing\MatrixManage.cshtml" />
+    <Content Remove="Pages\Pricing\_ManageProperty.cshtml" />
+    <Content Remove="Pages\Pricing\_Matrix.cshtml" />
+    <Content Remove="Pages\Pricing\_MatrixList.cshtml" />
+    <Content Remove="Pages\Pricing\_MatrixProperties.cshtml" />
     <Content Remove="wwwroot\htmx.js" />
   </ItemGroup>
 

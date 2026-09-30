@@ -1,0 +1,79 @@
+﻿@model IEnumerable<QuotedInk.Data.Models.PriceMatrixPrice>
+
+@{
+    var numColors = Model.Select(x => x.Color).Distinct().Count();
+    var numCount = Model.Select(x => x.LevelMaxCount).Distinct().Count();
+    var matrixID = Model.Select(x => x.MatrixId).Distinct().FirstOrDefault();
+
+    var LastRowCount = Model.Select(x => x.PriceMatrix).Distinct().FirstOrDefault();
+
+    var LastItem = Model.OrderBy(h => h.LevelMaxCount).Select(g => g.LevelMaxCount).Distinct().LastOrDefault();
+}
+<table class="table-borderless black table-hover table-primary priceMatrix">
+    <thead>
+        <tr>
+            <th style="background-color:#b3b7bb">&nbsp;</th>
+            <th style="padding:5px;">Num. Colors</th>
+
+            @for (int x = 1; x <= numColors; x++)
+            {
+                <th style="width:110px;text-align:center">
+                    @x
+                    @if (x == numColors)
+                    {
+                        <button id="removecolor-button" class="btn btn-primary " data-matrixid="@matrixID">-</button>
+                    }
+                </th>
+            }
+
+            <th></th>
+
+        </tr>
+        <tr>
+            <th style="padding:5px;">Num. Items</th>
+            <th style="background-color:#b3b7bb">&nbsp;</th>
+            @for (int x = 1; x <= numColors; x++)
+            {
+                <th style="background-color:#b3b7bb">&nbsp;</th>
+            }
+            <th>
+                <button id="addcolor-button" class="btn btn-primary" data-matrixid="@matrixID">+</button>
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var _row in Model.OrderBy(h => h.LevelMaxCount).Select(g => g.LevelMaxCount).Distinct())
+        {
+            <tr>
+
+                <th scope="row" style="padding-left:5px;min-width:115px" colspan="2">
+                    @LastRowCount.MinUnits - <input type="number" value="@_row" style="width:50px" data-countmax="@_row" data-matrixid="@matrixID" class="priceMaxCount" tabindex="-1" />
+                    @if (_row == LastItem)
+                    {
+                        <button id="removecount-button" class="btn btn-lg btn-primary" data-matrixid="@matrixID">-</button>
+                    }
+                </th>
+                @foreach (var _column in Model.OrderBy(h => h.Color).Where(g => g.LevelMaxCount == _row))
+                {
+                    <td style="min-width:70px">
+                        <div class="input-group">
+                            <div class="input-group-text">$</div>
+                            <input type="number" class="form-control priceMatrix priceCell" placeholder="cost" data-priceid="@_column.Id" data-matrixid="@matrixID" value="@_column.Price">
+                        </div>
+                    </td>
+                }
+            </tr>
+            LastRowCount.MinUnits = _row + 1;
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="100%">
+                <button id="addcount-button" class="btn btn-lg btn-primary" data-matrixid="@matrixID">+ Add Row</button>
+            </th>
+        </tr>
+    </tfoot>
+</table>
+

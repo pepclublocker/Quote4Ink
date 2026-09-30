@@ -1,0 +1,167 @@
+﻿@model IEnumerable<QuotedInk.Data.Models.PriceMatrixProperties>
+
+
+@{
+    int CountOneTime = Model.Where(x => x.PropertyType == QuotedInk.Data.Models.Enums.PropertyTypes.OneTime).Count();
+    int CountPerScreen = Model.Where(x => x.PropertyType == QuotedInk.Data.Models.Enums.PropertyTypes.PerScreen).Count();
+    int CountPerShirt = Model.Where(x => x.PropertyType == QuotedInk.Data.Models.Enums.PropertyTypes.PerShirt).Count();
+}
+<table style="width:100%;" class="table table-hover table-secondary" id="clientList">
+    @if (CountOneTime > 0)
+    {
+        <tr>
+            <th colspan="6">
+
+                <span>One Time Fees</span>
+                <i class="fa fa-star" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Fees applied one time to the quote/invoice."></i>
+            </th>
+        </tr>
+        <tr class="table-light">
+            <th></th>
+            <th>Name</th>
+
+            <th>Amount</th>
+           
+
+            <th>Active</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @foreach (var _Property in Model.Where(x => x.PropertyType == QuotedInk.Data.Models.Enums.PropertyTypes.OneTime))
+        {
+            <tr>
+                <td>@_Property.Id</td>
+                <td>@_Property.PropertyName</td>
+
+                <td>@_Property.PropertyAmount</td>
+               
+
+                <td>@_Property.IsActive</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-primary btn-sm editProp" data-propid="@_Property.Id">
+                        Edit
+                    </button>
+
+                    <button class="btn btn-danger btn-sm delProp" data-propid="@_Property.Id" data-matrixid="">
+                        Delete
+                    </button>
+
+                </td>
+            </tr>
+        }
+
+        <tr>  <th colspan="7" class="table-light"></tr>
+
+
+    }
+   
+    @if (CountPerScreen > 0)
+    {
+        <tr>
+            <th colspan="6">
+                <span>Per Screen/Color Fees</span>
+                <i class="fa fa-star" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Fees applied per screen or color to the quote/invoice."></i>
+            </th>
+        </tr>
+
+        <tr class="table-light">
+            <th></th>
+            <th>Name</th>
+
+            <th>Amount</th>
+            <th>Limits</th>
+            <th>Active</th>
+            <th></th>
+        </tr>
+
+
+        @foreach (var _Property in Model.Where(x => x.PropertyType == QuotedInk.Data.Models.Enums.PropertyTypes.PerScreen))
+        {
+            <tr>
+                <td>@_Property.Id</td>
+                <td>@_Property.PropertyName</td>
+
+                <td>@_Property.PropertyAmount</td>
+                <td>@_Property.LowerThreshold -
+                    @if (_Property.UpperThreshold == 0 || _Property.UpperThreshold.HasValue == false)
+                    {
+                        <span>Unlimited</span>
+                    }
+                    else
+                    {
+                        @_Property.UpperThreshold
+                    }
+                </td>
+                <td>@_Property.IsActive</td>
+                <td>
+                    <button class="btn btn-primary btn-sm editProp" data-propid="@_Property.Id">
+                        Edit
+                    </button>
+
+                    <button class="btn btn-danger btn-sm delProp" data-propid="@_Property.Id" data-matrixid="">
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+        }
+        <tr>  <th colspan="6" class="table-light"></tr>
+
+    }
+    
+    @if (CountPerShirt > 0)
+    {
+
+        <tr>
+            <th colspan="6">
+                <span>Per Unit Fees</span>
+                <i class="fa fa-star" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Fees applied for each item printed."></i>
+            </th>
+        </tr>
+
+        <tr class="table-light">
+            <th></th>
+            <th>Name</th>
+
+            <th>Amount</th>
+            <th>Limits</th>
+            <th>Active</th>
+            <th></th>
+        </tr>
+
+        @foreach (var _Property in Model.Where(x => x.PropertyType == QuotedInk.Data.Models.Enums.PropertyTypes.PerShirt))
+        {
+            <tr>
+                <td>@_Property.Id</td>
+                <td>@_Property.PropertyName</td>
+
+                <td>@_Property.PropertyAmount</td>
+                <td>
+                    @_Property.LowerThreshold -
+                    @if (_Property.UpperThreshold == 0 || _Property.UpperThreshold.HasValue == false)
+                    {
+                        <span>Unlimited</span>
+                    }
+                    else
+                    {
+                        @_Property.UpperThreshold
+                    }
+                </td>
+                <td>@_Property.IsActive</td>
+                <td>
+                    <button class="btn btn-primary btn-sm editProp" data-propid="@_Property.Id">
+                        Edit
+                    </button>
+
+                    <button class="btn btn-danger btn-sm delProp" data-propid="@_Property.Id" data-matrixid="">
+                        Delete
+                    </button>
+
+                </td>
+            </tr>
+        }
+    }
+</table>
