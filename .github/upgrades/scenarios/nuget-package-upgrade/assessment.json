@@ -1,0 +1,201 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": ""
+  },
+  "analysisStartTime": "2026-09-30T16:47:01.0164833Z",
+  "analysisEndTime": "2026-09-30T16:47:01.5610491Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 2,
+      "issues": 1,
+      "incidents": 4,
+      "effort": 0
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 0,
+        "Optional": 0,
+        "Potential": 0,
+        "Information": 4
+      },
+      "category": {
+        "Pkg": 4
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "Quote4Ink_DataLoader\\Quote4Ink_DataLoader.csproj",
+      "startingProject": true,
+      "issues": 1,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "Quote4Ink_DataLoader",
+        "projectKind": "DotNetCoreApp",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": false,
+        "numberOfFiles": 4,
+        "numberOfCodeFiles": 4,
+        "linesTotal": 640,
+        "linesOfCode": 640,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "a973670f-7779-4f85-9914-90f99334517e",
+          "ruleId": "Pkg.0001",
+          "description": "Project references \u0027SSH.NET\u0027 2026.0.0 (included in this upgrade).",
+          "projectPath": "Quote4Ink_DataLoader\\Quote4Ink_DataLoader.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "SSH.NET, 2026.0.0",
+              "protected": "SSH.NET, 2026.0.0"
+            },
+            "kind": "File",
+            "path": "Quote4Ink_DataLoader\\Quote4Ink_DataLoader.csproj",
+            "snippet": "SSH.NET, 2026.0.0",
+            "protectedSnippet": "SSH.NET, 2026.0.0",
+            "label": "SSH.NET 2026.0.0",
+            "properties": {
+              "PackageId": "SSH.NET",
+              "PackageVersion": "2026.0.0",
+              "PackageNewVersion": "2026.0.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "5e5d0eb6-6619-4464-ac74-e130c448e064",
+          "ruleId": "Pkg.0001",
+          "description": "Project references \u0027NuGet.Protocol\u0027 7.3.1; proposed upgrade to 7.9.0.",
+          "projectPath": "Quote4Ink_DataLoader\\Quote4Ink_DataLoader.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "NuGet.Protocol, 7.3.1",
+              "protected": "NuGet.Protocol, 7.3.1"
+            },
+            "kind": "File",
+            "path": "Quote4Ink_DataLoader\\Quote4Ink_DataLoader.csproj",
+            "snippet": "NuGet.Protocol, 7.3.1",
+            "protectedSnippet": "NuGet.Protocol, 7.3.1",
+            "label": "NuGet.Protocol 7.3.1",
+            "properties": {
+              "PackageId": "NuGet.Protocol",
+              "PackageVersion": "7.3.1",
+              "PackageNewVersion": "7.9.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "2dd2ac02-b3ee-410c-8710-4925612cbb59",
+          "ruleId": "Pkg.0001",
+          "description": "Project references \u0027NuGet.Packaging\u0027 7.3.1; proposed upgrade to 7.9.0.",
+          "projectPath": "Quote4Ink_DataLoader\\Quote4Ink_DataLoader.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "NuGet.Packaging, 7.3.1",
+              "protected": "NuGet.Packaging, 7.3.1"
+            },
+            "kind": "File",
+            "path": "Quote4Ink_DataLoader\\Quote4Ink_DataLoader.csproj",
+            "snippet": "NuGet.Packaging, 7.3.1",
+            "protectedSnippet": "NuGet.Packaging, 7.3.1",
+            "label": "NuGet.Packaging 7.3.1",
+            "properties": {
+              "PackageId": "NuGet.Packaging",
+              "PackageVersion": "7.3.1",
+              "PackageNewVersion": "7.9.0",
+              "PackageReplacements": null
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "Web\\Web.csproj",
+      "startingProject": true,
+      "issues": 1,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "Web",
+        "projectKind": "AspNetCore",
+        "frameworks": [
+          "net10.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "isTestProject": false,
+        "numberOfFiles": 2694,
+        "numberOfCodeFiles": 116,
+        "linesTotal": 1414537,
+        "linesOfCode": 12518,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "f82cc2d7-0ac1-4b9d-9699-86d8f7e37022",
+          "ruleId": "Pkg.0001",
+          "description": "Project references \u0027NuGet.Packaging\u0027 7.3.1; proposed upgrade to 7.9.0.",
+          "projectPath": "Web\\Web.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "NuGet.Packaging, 7.3.1",
+              "protected": "NuGet.Packaging, 7.3.1"
+            },
+            "kind": "File",
+            "path": "Web\\Web.csproj",
+            "snippet": "NuGet.Packaging, 7.3.1",
+            "protectedSnippet": "NuGet.Packaging, 7.3.1",
+            "label": "NuGet.Packaging 7.3.1",
+            "properties": {
+              "PackageId": "NuGet.Packaging",
+              "PackageVersion": "7.3.1",
+              "PackageNewVersion": "7.9.0",
+              "PackageReplacements": null
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "Pkg.0001": {
+      "id": "Pkg.0001",
+      "isFeature": false,
+      "description": "Project references a package included in this upgrade.\n\nThe project references one of the packages being upgraded. This finding records the reference (current and proposed version) so the assessment lists every affected project even when no breaking API changes were detected.",
+      "label": "Project references an upgraded package",
+      "severity": "Information",
+      "effort": 0
+    }
+  }
+}

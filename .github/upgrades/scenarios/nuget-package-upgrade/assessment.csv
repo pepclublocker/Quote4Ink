@@ -1,0 +1,5 @@
+Issue ID,Description,State,Severity,Story Points,Project Path,Location Kind,Path,Line,Column,Incident ID,Help Link,Assembly Name,Assembly Version,Assembly Public Key,Snippet
+Pkg.0001,Project references an upgraded package,Active,Information,0,Quote4Ink_DataLoader\Quote4Ink_DataLoader.csproj,File,Quote4Ink_DataLoader\Quote4Ink_DataLoader.csproj,,,SSH.NET 2026.0.0,,,,,"SSH.NET, 2026.0.0"
+Pkg.0001,Project references an upgraded package,Active,Information,0,Quote4Ink_DataLoader\Quote4Ink_DataLoader.csproj,File,Quote4Ink_DataLoader\Quote4Ink_DataLoader.csproj,,,NuGet.Protocol 7.3.1,,,,,"NuGet.Protocol, 7.3.1"
+Pkg.0001,Project references an upgraded package,Active,Information,0,Quote4Ink_DataLoader\Quote4Ink_DataLoader.csproj,File,Quote4Ink_DataLoader\Quote4Ink_DataLoader.csproj,,,NuGet.Packaging 7.3.1,,,,,"NuGet.Packaging, 7.3.1"
+Pkg.0001,Project references an upgraded package,Active,Information,0,Web\Web.csproj,File,Web\Web.csproj,,,NuGet.Packaging 7.3.1,,,,,"NuGet.Packaging, 7.3.1"
