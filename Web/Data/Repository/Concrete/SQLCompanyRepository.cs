@@ -25,21 +25,26 @@ namespace Web.Data.Repository
             _context.SaveChanges();
         }
 
-        public void UpdateCompany(Company company)
+        public bool UpdateCompany(Company company, int __salesGroup)
         {
+            var originalCompany = _context.Companies
+                .FirstOrDefault(x => x.SalesGroupID == __salesGroup && x.Id == company.Id);
 
-            Company OriginalCompany = _context.Companies.Where(x => x.SalesGroupID == company.SalesGroupID && x.Id == company.Id).FirstOrDefault() ?? new Company();
+            if (originalCompany == null)
+            {
+                return false;
+            }
 
-            company.DateCreated = OriginalCompany.DateCreated;
-            company.Privledged = OriginalCompany.Privledged;
+            originalCompany.Name = company.Name;
+            originalCompany.Address1 = company.Address1;
+            originalCompany.Address2 = company.Address2;
+            originalCompany.City = company.City;
+            originalCompany.Region = company.Region;
+            originalCompany.PostalCode = company.PostalCode;
+            originalCompany.DateUpdated = DateTime.Now;
 
-            OriginalCompany = company;
-            OriginalCompany.DateUpdated = DateTime.Now;
-
-
-            _context.ChangeTracker.Clear();
-            _context.Companies.Update(OriginalCompany);
             _context.SaveChanges();
+            return true;
         }
 
         public Company GetCompany(Guid CompanyID, int __salesGroup)

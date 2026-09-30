@@ -147,14 +147,18 @@ namespace Web.Pages
             }
         }
 
-        public IActionResult OnPostUpdate(Web.Data.Models.Company Input)
+        public async Task<IActionResult> OnPostUpdate(Web.Data.Models.Company Input)
         {
             //this updates the client based on the info sent to the form 
 
-            var myUser = _appUser?.GetUserAsync(User).Result;
+            var myUser = _appUser == null ? null : await _appUser.GetUserAsync(User);
             if (myUser != null)
             {
                 Web.Data.Models.Company oldCompany = _repRepository?.GetCompany(Input.Id, myUser.SalesGroupID) ?? new Web.Data.Models.Company();
+                if (oldCompany.Id != Input.Id)
+                {
+                    return NotFound();
+                }
 
                 //if oldCompany is null - this maybe a new company - check on this 
                 var comparer = new ObjectsComparer.Comparer<Web.Data.Models.Company>();
@@ -163,7 +167,10 @@ namespace Web.Pages
 
                 if (!comparer.Compare(Input, oldCompany, out differences))
                 {
-                    _repRepository?.UpdateCompany(Input);
+                    if (_repRepository?.UpdateCompany(Input, myUser.SalesGroupID) != true)
+                    {
+                        return NotFound();
+                    }
                 }
 
                 var companies = _repRepository?.GetCompanys(myUser.SalesGroupID);

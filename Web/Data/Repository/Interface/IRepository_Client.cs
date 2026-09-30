@@ -9,7 +9,7 @@ namespace Web.Data.Repository
     {
         public IEnumerable<Client> GetClients(int __salesGroup, bool ActiveUsers = true);
         public Client GetClient(Guid ClientID, int __salesGroup);
-        public void UpdateClient(Client client);
+        public bool UpdateClient(Client client, int __salesGroup);
         public void SaveClient(Client client);
 
         public bool DeleteClient(Guid ClientID, int __salesGroup);

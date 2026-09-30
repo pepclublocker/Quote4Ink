@@ -10,7 +10,7 @@ namespace Web.Data.Repository
         public IEnumerable<Company> GetCompanys(int __salesGroup);
         public Company GetCompany(Guid CompanyID, int __salesGroup);
         public void SaveCompany(Company company);
-        public void UpdateCompany(Company company);
+        public bool UpdateCompany(Company company, int __salesGroup);
         public bool DeleteCompany(Guid CompanyID, int __salesGroup);
     }
 }

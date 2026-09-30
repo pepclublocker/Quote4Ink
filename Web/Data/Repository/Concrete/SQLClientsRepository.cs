@@ -24,7 +24,9 @@ namespace Web.Data.Repository
             //-must be in sale group of user
             //-must have id selected
 
-            return _context.Clients.Where(x => x.Id == ClientID).FirstOrDefault() ?? new Client();
+            return _context.Clients
+                .Where(x => x.Id == ClientID && _context.Companies.Any(company => company.Id == x.CompanyID && company.SalesGroupID == __salesGroup))
+                .FirstOrDefault() ?? new Client();
         }
 
         public void SaveClient(Client client)
@@ -34,27 +36,35 @@ namespace Web.Data.Repository
             _context.Clients.Add(client);
             _context.SaveChanges();
         }
-        public void UpdateClient(Client client)
+        public bool UpdateClient(Client client, int __salesGroup)
         {
-            var OriginalClient = _context.Clients.Where(x => x.Id == client.Id).FirstOrDefault() ?? new Client();
+            var originalClient = _context.Clients
+                .Where(x => x.Id == client.Id && _context.Companies.Any(company => company.Id == x.CompanyID && company.SalesGroupID == __salesGroup))
+                .FirstOrDefault();
 
-            client.DateCreated = OriginalClient.DateCreated;
-            client.Privledged = OriginalClient.Privledged;
+            if (originalClient == null)
+            {
+                return false;
+            }
 
-            OriginalClient = client;
+            originalClient.FirstName = client.FirstName;
+            originalClient.LastName = client.LastName;
+            originalClient.Email = client.Email;
+            originalClient.Address = client.Address;
+            originalClient.ZipCode = client.ZipCode;
+            originalClient.City = client.City;
+            originalClient.State = client.State;
+            originalClient.DateUpdated = DateTime.Now;
 
-            OriginalClient.DateUpdated = DateTime.Now;
-
-
-            _context.ChangeTracker.Clear();
-            _context.Clients.Update(OriginalClient);
             _context.SaveChanges();
-
+            return true;
         }
 
         public bool DeleteClient(Guid ClientID, int __salesGroup)
         { 
-            var xRows = _context.Clients.Where(x => x.Id == ClientID).FirstOrDefault();
+            var xRows = _context.Clients
+                .Where(x => x.Id == ClientID && _context.Companies.Any(company => company.Id == x.CompanyID && company.SalesGroupID == __salesGroup))
+                .FirstOrDefault();
 
             if (xRows != null)
             {

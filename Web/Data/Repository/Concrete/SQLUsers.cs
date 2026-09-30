@@ -6,12 +6,11 @@ namespace Web.Data.Repository
     public partial class SQLRepository : IRepository
     {
 
-        public List<System.Collections.Generic.KeyValuePair<Web.Data.Models.ApplicationUser, System.Collections.Generic.List<Microsoft.AspNetCore.Identity.IdentityRole>>> GetMyUsers()
+        public List<System.Collections.Generic.KeyValuePair<Web.Data.Models.ApplicationUser, System.Collections.Generic.List<Microsoft.AspNetCore.Identity.IdentityRole>>> GetMyUsers(int __salesGroup)
         {
-            //return  _userManager.Users.Where(x => x.SalesGroup == 1 && x.).ToList();
-
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             List<System.Collections.Generic.KeyValuePair<Web.Data.Models.ApplicationUser, System.Collections.Generic.List<Microsoft.AspNetCore.Identity.IdentityRole>>> myUsers = _context.Users
+     .Where(user => user.SalesGroupID == __salesGroup)
      .SelectMany(
          // -- below emulates a left outer join, as it returns DefaultIfEmpty in the collectionSelector
          user => _context.UserRoles.Where(userRoleMapEntry => user.Id == userRoleMapEntry.UserId).DefaultIfEmpty(),
@@ -36,7 +35,7 @@ namespace Web.Data.Repository
          x => x).ToList();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-            return myUsers.Where(x => x.Key.SalesGroupID == 1).ToList();
+            return myUsers;
         }
 
 

@@ -149,19 +149,32 @@ namespace Web.Pages
 
                 var oldClient = _repRepository?.GetClient(Input.Id, myUser.SalesGroupID) ?? new Client();
 
-
-                var comparer = new ObjectsComparer.Comparer<Client>();
-                IEnumerable<Difference> differences;
-                comparer.IgnoreMember<DateTime>();
-
-                if (!comparer.Compare(Input, oldClient, out differences))
+                if (oldClient.Id != Input.Id)
                 {
-                    _repRepository?.UpdateClient(Input);
-                    _notyf.Success("Client edited and saved!");
+                    _notyf.Error("Client could not be updated.");
                 }
                 else
                 {
-                    _notyf.Information("No changes to client detected.<br> No update made.");
+
+                    var comparer = new ObjectsComparer.Comparer<Client>();
+                    IEnumerable<Difference> differences;
+                    comparer.IgnoreMember<DateTime>();
+
+                    if (!comparer.Compare(Input, oldClient, out differences))
+                    {
+                        if (_repRepository?.UpdateClient(Input, myUser.SalesGroupID) == true)
+                        {
+                            _notyf.Success("Client edited and saved!");
+                        }
+                        else
+                        {
+                            _notyf.Error("Client could not be updated.");
+                        }
+                    }
+                    else
+                    {
+                        _notyf.Information("No changes to client detected.<br> No update made.");
+                    }
                 }
 
                 var clients = _repRepository?.GetClients(myUser.SalesGroupID);

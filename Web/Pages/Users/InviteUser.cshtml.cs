@@ -3,6 +3,7 @@
 #nullable disable
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,6 +18,7 @@ using System.Text.Encodings.Web;
 
 namespace Web.Pages.Users
 {
+    [Authorize(Roles = "Administrator, Manager")]
     public class InviteUserModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -104,6 +106,12 @@ namespace Web.Pages.Users
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Forbid();
+            }
+
             if (ModelState.IsValid)
             {
 
@@ -111,7 +119,7 @@ namespace Web.Pages.Users
 
 
                 //assign sales group to user - based on current user requesting
-                user.SalesGroupID = _userManager.GetUserAsync(User).Result.SalesGroupID;
+                user.SalesGroupID = currentUser.SalesGroupID;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

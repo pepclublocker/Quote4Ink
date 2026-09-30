@@ -19,42 +19,49 @@ namespace Web.Pages
         public List<System.Collections.Generic.KeyValuePair<Web.Data.Models.ApplicationUser, System.Collections.Generic.List<Microsoft.AspNetCore.Identity.IdentityRole>>> Users { get; private set; } = new List<System.Collections.Generic.KeyValuePair<Web.Data.Models.ApplicationUser, System.Collections.Generic.List<Microsoft.AspNetCore.Identity.IdentityRole>>>();
 
 
-        public IActionResult OnGetLoadInital()
+        public async Task<IActionResult> OnGetLoadInital()
         {           
-            // Ensure _repRepository is not null before dereferencing
+            var currentUser = await _appUser.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Forbid();
+            }
+
             if (_repRepository != null)
             {
-                Users = _repRepository.GetMyUsers();
-            }
-            else
-            {
-                Users = new List<System.Collections.Generic.KeyValuePair<Web.Data.Models.ApplicationUser, System.Collections.Generic.List<Microsoft.AspNetCore.Identity.IdentityRole>>>();
+                Users = _repRepository.GetMyUsers(currentUser.SalesGroupID);
             }
 
             return Partial("_UserList", Users);
         }
 
-        public IActionResult OnPostDeleteUser(string UserID)
+        public async Task<IActionResult> OnPostDeleteUser(string UserID)
         {
-            if (_appUser == null)
+            var currentUser = await _appUser.GetUserAsync(User);
+            if (currentUser == null)
             {
-                return new JsonResult(new { error = "UserManager is not available." });
+                return Forbid();
             }
 
-            var delUser = _appUser.FindByIdAsync(UserID).Result;
+            var delUser = await _appUser.FindByIdAsync(UserID);
             if (delUser == null)
             {
                 return new JsonResult(new { error = "User not found." });
             }
 
-            var result = _appUser.DeleteAsync(delUser).Result; //make this a soft delete?
+            if (delUser.SalesGroupID != currentUser.SalesGroupID)
+            {
+                return Forbid();
+            }
+
+            var result = await _appUser.DeleteAsync(delUser); //make this a soft delete?
 
             _appUser.UpdateSecurityStampAsync(delUser);
 
             if (result.Succeeded)
             {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                Users = _repRepository.GetMyUsers();
+                Users = _repRepository.GetMyUsers(currentUser.SalesGroupID);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
                 return Partial("_UserList", Users);
             }
